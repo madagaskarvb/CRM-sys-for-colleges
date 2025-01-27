@@ -16,3 +16,5 @@ def create_baza():
         password VARCHAR(150) NOT NULL
     );""")
     connection.commit()
+
+create_baza()
