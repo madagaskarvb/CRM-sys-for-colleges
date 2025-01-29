@@ -56,42 +56,36 @@ def cleanup_deleted_users():
     with open('deleted_users.json', 'w', encoding='utf-8') as f:
         json.dump(new_data, f, ensure_ascii=False, indent=4)
 
-def alter_table():
-    pass
-
-def add_table():
-    # Разбить на несколько функция надо!!!!!!!!!!!!
+def changes_in_table():
     name = input("Table name: ")
-    cursor.execute(f"CREATE TABLE IF NOT EXISTS {name}")
-    columns = int(input("Attribute(s) amount: "))
-    for i in columns:
-        print("i attribute: \n")
-        atr_name = input("Attribute name: ")
-        data_type = int(input("Data type? 1)Integer     2)Real      3)Text      4)Null :"))
+    cursor.execute(f"UPDATE {name} SET attribute = {value} WHERE attribute2 = {value2}")
 
-        if data_type == 1:
-            datatype = "INTEGER"
-        elif datatype == 2:
-            datatype = "REAL"
-        elif datatype == 3:
-            datatype = "TEXT"
-        elif datatype == 4:
-            datatype = "NULL"
-
-        cursor.execute(f"""ALTER TABLE {name}
-        ADD {atr_name} {data_type};""")
+def write_in_table():
+    name = input("Table name: ")
+    data = input("Input data: ")
+    try:
+        cursor.execute("""INSERT INTO {name} VALUES {data}""")
         connection.commit()
+        print("Data added!")
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
 
-        pk = input("ADD Primary Key?(Y/N): ")
-        if pk == "Y":
-            pk_name = input("Attribute to make PK: ")
-            cursor.execute(f"""ALTER TABLE {name}
-            ADD PRIMARY KEY ({pk_name});""")
-            connection.commit()
+def create_table():
+    table_name = input("Enter the name of the table: ").strip()
+    table_attributes = input(f"Enter the attributes for the table '{table_name}': ").strip()
+    create_table_query = f"CREATE TABLE {table_name} ({table_attributes});"
+
+    try:
+        cursor.execute(create_table_query)
+        connection.commit()
+        print(f"Table '{table_name}' created successfully.")
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
 
 def delete_table():
     table_delete = input("Name of table to delete: ")
     cursor.execute(f"DROP TABLE IF EXISTS {table_delete}")
+    connection.commit()
 
 
 # Запись удалённого (точнее, помеченного на удаление) пользователя в deleted_users.json
