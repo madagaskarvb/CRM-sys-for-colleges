@@ -1,6 +1,7 @@
 from django.db import models
 
 class User(models.Model):
+    objects = None
     ACCESS_LEVELS = [
         ('admin', 'Администратор'),
         ('moderator', 'Модератор'),
