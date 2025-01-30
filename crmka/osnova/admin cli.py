@@ -74,6 +74,18 @@ def changes_in_table():
     except sqlite3.Error as e:
         print(f"An error occurred: {e}")
 
+def delete_records_table():
+    name = input("Table name: ")
+    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}'")
+    table_exists = cursor.fetchone()
+    if not table_exists:
+        # If the table does not exist, print a message
+        print(f"Table '{name}' does not exist.")
+        return
+
+    where = input("DELETE WHERE: ")
+    cursor.execute(f"DELETE FROM {name} WHERE {where}")
+
 def write_in_table():
     name = input("Table name: ")
     cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}'")
@@ -342,56 +354,38 @@ def change_user_status(current_login):
         print("Статус 'Удалён': изменять статус такого пользователя нельзя. Воспользуйтесь восстановлением.\n")
         return
 
-print(f"Текущий статус пользователя: {current_status}")
-print("Выберите новый статус:")
-print(" 1 - Активный")
-print(" 2 - Не активен")
-choice = input("Ваш выбор: ")
-if choice == "1":
-    new_status = "Активный"
-elif choice == "2":
-    new_status = "Не активен"
-else:
-    print("Некорректный выбор.\n")
-try:
-    cursor.execute("UPDATE users SET status = ? WHERE login = ?", (new_status, login))
-    connection.commit()
-    print(f"Статус пользователя обновлён на '{new_status}'.\n")
-except sqlite3.Error as e:
-    print("Ошибка при обновлении статуса:")
-    print(f"   {e}\n")
+def menu():
+    while True:
+        # print("Выберите действие:")
+        # print(" 1 - Удалить пользователя (пометка на удаление)")
+        # print(" 2 - Добавить пользователя")
+        # print(" 3 - Поменять своё имя")
+        # print(" 4 - Отобразить всех пользователей")
+        # print(" 5 - Восстановить «Удалённого» пользователя")
+        # print(" 6 - Изменить статус пользователя (Активный/Не активен)")
+        # print(" 7 - Изменить имя другого пользователя")
+        # print(" 0 - Выйти")
+        var = input("ACTION: ")
 
-print("Выберите действие:")
-
-print(" 1 - Удалить пользователя (пометка на удаление)")
-print(" 2 - Добавить пользователя")
-print(" 3 - Поменять своё имя")
-print(" 4 - Отобразить всех пользователей")
-print(" 5 - Восстановить «Удалённого» пользователя")
-print(" 6 - Изменить статус пользователя (Активный/Не активен)")
-print(" 7 - Изменить имя другого пользователя")
-print(" 0 - Выйти")
-var = input("Ваш выбор: ")
-
-if var == "1":
-    delete_user()
-elif var == "2":
-    add_user()
-elif var == "3":
-    change_name(current_login)
-elif var == "4":
-    show_users()
-elif var == "5":
-    reincornation_user()
-elif var == "6":
-    change_user_status(current_login)
-elif var == "7":
-    change_other_user_name()
-elif var == "0":
-    print("Выход.")
-    break
-else:
-    print("Нет такой команды.\n")
+        # if var == "1":
+        #     delete_user()
+        # elif var == "2":
+        #     add_user()
+        # elif var == "3":
+        #     change_name(current_login)
+        # elif var == "4":
+        #     show_users()
+        # elif var == "5":
+        #     reincornation_user()
+        # elif var == "6":
+        #     change_user_status(current_login)
+        # elif var == "7":
+        #     change_other_user_name() 
+        # elif var == "0":
+        #     print("Выход.")
+        #     break
+        # else:
+        #     print("Нет такой команды.\n")
 
 if __name__ == "__main__":
     init()
