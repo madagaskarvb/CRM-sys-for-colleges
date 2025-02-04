@@ -1,20 +1,24 @@
 from django.contrib import admin
-from .models import User
+from .models import Student, Teacher, Grade, Faculty, EducationalMaterial
 from .forms import UserAdminForm
 
 class UserAdmin(admin.ModelAdmin):
     form = UserAdminForm
 
     # Отображение в списке
-    list_display = ['name', 'login', 'email', 'level']
+    list_display = ['name', 'login', 'email']
     search_fields = ['name', 'login', 'email']
-    list_filter = ['level']
 
     # Поля для редактирования и добавления
     fieldsets = (
         (None, {
-            'fields': ('name', 'login', 'email', 'level', 'password')
+            'fields': ('name', 'login', 'email', 'password')
         }),
     )
 
-admin.site.register(User, UserAdmin)
+# Регистрируем каждую модель отдельно
+admin.site.register(Student, UserAdmin)
+admin.site.register(Teacher)
+admin.site.register(Grade)
+admin.site.register(Faculty)
+admin.site.register(EducationalMaterial)

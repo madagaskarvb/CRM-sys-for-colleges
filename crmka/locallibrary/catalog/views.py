@@ -1,14 +1,14 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import User
+from .models import Student
 
 def index(request):
     """
     Функция отображения для домашней страницы сайта.
     """
     # Генерация "количеств" некоторых главных объектов
-    num_users=User.objects.all().count()
+    num_users = Student.objects.all().count()
 
     # Отрисовка HTML-шаблона index.html с данными внутри
     # переменной контекста context
