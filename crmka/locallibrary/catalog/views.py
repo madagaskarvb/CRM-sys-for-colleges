@@ -26,3 +26,6 @@ def teacher_page(request):
 
 def admin_page(request):
     return render(request, 'basikPages/adminPage.html')
+
+def main(request):
+    return render(request, 'basikPages/main.html')
