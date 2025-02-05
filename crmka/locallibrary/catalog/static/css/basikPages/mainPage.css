@@ -29,12 +29,13 @@ body {
   color: transparent; /* Прозрачный цвет текста */
   text-shadow: 
       2px 2px 0 #71cf594b, /* Первая тень */
-      -2px -2px 0 #000000f3, /* Вторая тень */
+      -2px -2px 0 #a02aa6f3, /* Вторая тень */
       4px 4px 0 #000000f1, /* Третья тень */
       -4px -4px 0 #ea19ea; /* Четвертая тень */
   z-index: -1; /* Помещаем тени за основной текст */
   animation: wave 2s infinite alternate; /* Анимация для эффекта волнистости */
 }
+
 
 @keyframes wave {
   0% {
