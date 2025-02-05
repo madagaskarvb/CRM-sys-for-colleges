@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.views import LoginView
 
 # Create your views here.
 from .models import Student
@@ -18,14 +19,43 @@ from .models import Student
 #         context={'num_users':num_users},
 #     )
 
-def student_page(request):
-    return render(request, 'basikPages/studentPage.html')
+def adminPage(request):
+    return render(request, 'basikPages/adminPage.html', {'css_file': 'basikPages/adminPage.css'})
 
-def teacher_page(request):
-    return render(request, 'basikPages/teacherPage.html')
+def studentPage(request):
+    return render(request, 'basikPages/studentPage.html', {'css_file': 'basikPages/studentPage.css'})
 
-def admin_page(request):
-    return render(request, 'basikPages/adminPage.html')
+def mainPage(request):
+    return render(request, 'base_generic.html', {'css_file': 'basikPages/mainPage.css'})
 
-def main(request):
-    return render(request, 'basikPages/main.html')
+def teacherPage(request):
+    return render(request, 'basikPages/teacherPage.html', {'css_file': 'basikPages/teacherPage.css'})
+
+def loginPage(request):
+    return render(request, 'registration/login.html', {'css_file': 'registration/login.css'})
+
+def loggedOutPage(request):
+    return render(request, 'registration/logged_out.html', {'css_file': 'registration/logged_out.css'})
+
+def passwordResetCompletePage(request):
+    return render(request, 'registration/password_reset_complete.html', {'css_file': 'registration/password_reset_complete.css'})
+
+def passwordResetConfirmPage(request):
+    return render(request, 'registration/password_reset_confirm.html', {'css_file': 'registration/password_reset_confirm.css'})
+
+def passwordResetDonePage(request):
+    return render(request, 'registration/password_reset_done.html', {'css_file': 'registration/password_reset_done.css'})
+
+def passwordResetEmailPage(request):
+    return render(request, 'registration/password_reset_email.html', {'css_file': 'registration/password_reset_email.css'})
+
+def passwordResetFormPage(request):
+    return render(request, 'registration/password_reset_form.html', {'css_file': 'registration/password_reset_form.css'})
+
+class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['css_file'] = 'registration/login.css'
+        return context

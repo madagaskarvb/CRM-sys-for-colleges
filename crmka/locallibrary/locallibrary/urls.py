@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from catalog import views
+from django.shortcuts import render
 # Используйте include() чтобы добавлять URL из каталога приложения
 from django.urls import include
 from django.urls import path
@@ -25,9 +27,22 @@ from django.views.generic import RedirectView
 # Только на период разработки
 from django.conf import settings
 from django.conf.urls.static import static
+from catalog.views import CustomLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('catalog.urls')),
+    path('student/', views.studentPage, name='student_page'),
+    path('teacher/', views.teacherPage, name='teacher_page'),
+    path('admin_page/', views.adminPage, name='admin_page'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('', views.mainPage, name='main_page'),
+    path('logged_out/', views.loggedOutPage, name='logged_out'),
+    path('password_reset_complete/', views.passwordResetCompletePage, name='password_reset_complete'),
+    path('password_reset_confirm/', views.passwordResetConfirmPage, name='password_reset_confirm'),
+    path('password_reset_done/', views.passwordResetDonePage, name='password_reset_done'),
+    path('password_reset_email/', views.passwordResetEmailPage, name='password_reset_email'),
+    path('password_reset_form/', views.passwordResetFormPage, name='password_reset_form'),
     path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
