@@ -1,5 +1,5 @@
 body {
-  background-image: url("{% static 'images/photo.png' %}"); /* Путь к изображению через static */
+  background-image: url("{% static 'images/photo.png' %}");
   background-size: cover; 
   background-position: center;
   background-repeat: no-repeat;
@@ -14,35 +14,35 @@ body {
 }
 
 .wavy-text {
-  font-size: 48px; /* Размер текста */
-  font-weight: bold; /* Жирный шрифт */
-  color: #74186e96; /* Цвет текста */
+  font-size: 48px; 
+  font-weight: bold; 
+  color: #74186e96; 
   position: relative;
   display: inline-block;
 }
 
 .wavy-text::before {
-  content: attr(data-text); /* Используем атрибут data-text для дублирования текста */
+  content: attr(data-text); 
   position: absolute;
   top: 0;
   left: 0;
-  color: transparent; /* Прозрачный цвет текста */
+  color: transparent; 
   text-shadow: 
-      2px 2px 0 #71cf594b, /* Первая тень */
-      -2px -2px 0 #a02aa6f3, /* Вторая тень */
-      4px 4px 0 #000000f1, /* Третья тень */
-      -4px -4px 0 #ea19ea; /* Четвертая тень */
-  z-index: -1; /* Помещаем тени за основной текст */
-  animation: wave 2s infinite alternate; /* Анимация для эффекта волнистости */
+      2px 2px 0 #71cf594b, 
+      -2px -2px 0 #a02aa6f3, 
+      4px 4px 0 #000000f1,
+      -4px -4px 0 #ea19ea; 
+  z-index: -1; 
+  animation: wave 2s infinite alternate; 
 }
 
 
 @keyframes wave {
   0% {
-      transform: translateY(0); /* Начальное положение */
+      transform: translateY(0); 
   }
   100% {
-      transform: translateY(10px); /* Конечное положение */
+      transform: translateY(10px); 
   }
 }
 
@@ -53,8 +53,8 @@ header h1 {
 nav ul {
   list-style: none;
   display: flex;
-  justify-content: flex-start; /* Выравниваем элементы по левому краю */
-  gap: 105rem; /* Расстояние между элементами */
+  justify-content: flex-start; 
+  gap: 105rem; 
   margin: 0;
   padding: 0;
 }
@@ -62,14 +62,14 @@ nav ul {
 nav a {
   color: #bb13d1;
   text-decoration: none;
-  font-size: 1.9rem; /* Увеличиваем размер текста */
-  padding: 1.75rem 2.5rem; /* Увеличиваем внутренние отступы */
-  border-radius: 5px; /* Закруглённые углы */
-  transition: background-color 0.3s ease; /* Плавное изменение цвета */
+  font-size: 1.9rem; 
+  padding: 1.75rem 2.5rem; 
+  border-radius: 5px;
+  transition: background-color 0.3s ease; 
 }
 
 nav a:hover {
-  background-color: rgba(187, 17, 209, 0.252); /* Лёгкий фон при наведении */
+  background-color: rgba(187, 17, 209, 0.252);
 }
 
 main {
