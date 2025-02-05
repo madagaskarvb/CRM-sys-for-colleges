@@ -320,13 +320,37 @@ def change_other_user_name():
         print("Ошибка при изменении имени другого пользователя:")
         print(f"   {e}\n")
 
-# Отобразить всех пользователей (не зависит от статуса)
-def show_users():
-    print("\n=== Список пользователей ===")
-    print("Имя || Логин || Почта || Статус || Роль")
-    for row in cursor.execute("SELECT name, login, email, status, level FROM users"):
-        print(row)
-    print()
+def show_table(db_path: str, table_name: str):
+    """
+    Prints the contents of the specified SQLite table.
+    
+    :param db_path: Path to the SQLite database file.
+    :param table_name: Name of the table to print.
+    """
+    try:
+        # Connect to the SQLite database
+        
+        # Fetch column names
+        cursor.execute(f"PRAGMA table_info({table_name})")
+        columns = [col[1] for col in cursor.fetchall()]
+        
+        # Fetch table contents
+        cursor.execute(f"SELECT * FROM {table_name}")
+        rows = cursor.fetchall()
+        
+        # Print column headers
+        print(" | ".join(columns))
+        print("-" * (len(" | ".join(columns)) + 5))
+        
+        # Print rows
+        for row in rows:
+            print(" | ".join(str(value) for value in row))
+
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+
+# Example usage:
+# print_table_contents("my_database.db", "my_table")
 
 
 # Функция изменения статуса пользователя (только для admin)
@@ -354,7 +378,68 @@ def change_user_status(current_login):
         print("Статус 'Удалён': изменять статус такого пользователя нельзя. Воспользуйтесь восстановлением.\n")
         return
 
-def menu():
+# Функция авторизации
+def auth():
+    print("\n=== Авторизация ===")
+    login = input("Логин: ")
+    password = input("Пароль: ")
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    cursor.execute("SELECT login, level, status FROM users WHERE login = ? AND password = ?", (login, hashed_password))
+    user_data = cursor.fetchone()
+
+    if user_data is None:
+        print("Неверный логин или пароль.\n")
+        return None
+    else:
+        # user_data = (login, level, status)
+        if user_data[2] == "Удалён":
+            print("Ваш аккаунт удалён. Обратитесь к администратору.\n")
+            return None
+        elif user_data[2] == "Не активен":
+            print(f"Добро пожаловать, {login}. Ваш аккаунт «Не активен» (забанен).")
+            print("Никакие действия, кроме выхода, недоступны.\n")
+            return (user_data[0], user_data[1], user_data[2])
+        else:
+            print(f"Успешный вход! Добро пожаловать, {login} (роль: {user_data[1]}), статус: {user_data[2]}\n")
+            return (user_data[0], user_data[1], user_data[2])
+            
+# Основная «точка входа»
+def init():
+    create_baza()
+    cleanup_deleted_users()  # перед стартом убираем записи старше 14 дней
+
+    # Проверка наличия админов
+    cursor.execute("SELECT user_id FROM users WHERE level = 'admin'")
+    admin_exists = cursor.fetchone()
+    if not admin_exists:
+        print("В базе нет администраторов. Создаём первого администратора.\n")
+        name = input("Введите имя администратора: ")
+        login = input("Введите логин: ")
+        email = input("Введите email: ")
+        password = input("Введите пароль: ")
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+        cursor.execute(
+            "INSERT INTO users(name, login, email, password, level) VALUES (?,?,?,?,?)",
+            (name, login, email, hashed_password, 'admin')
+        )
+        connection.commit()
+        print("Администратор создан! Можете авторизоваться.\n")
+
+    current_user = None
+    while current_user is None:
+        current_user = auth()
+        if current_user is None:
+            again = input("Повторить попытку входа? (y/n): ")
+            if again.lower() != 'y':
+                print("Выход из программы.")
+                sys.exit(0)
+
+    current_login, current_role, current_status = current_user
+    return current_login
+
+def menu(current_login):
     while True:
         # print("Выберите действие:")
         # print(" 1 - Удалить пользователя (пометка на удаление)")
@@ -367,25 +452,33 @@ def menu():
         # print(" 0 - Выйти")
         var = input("ACTION: ")
 
-        # if var == "1":
-        #     delete_user()
-        # elif var == "2":
-        #     add_user()
-        # elif var == "3":
-        #     change_name(current_login)
-        # elif var == "4":
-        #     show_users()
-        # elif var == "5":
-        #     reincornation_user()
-        # elif var == "6":
-        #     change_user_status(current_login)
-        # elif var == "7":
-        #     change_other_user_name() 
-        # elif var == "0":
-        #     print("Выход.")
-        #     break
-        # else:
-        #     print("Нет такой команды.\n")
+        if var == "CHANGE TABLE":
+            changes_in_table()
+        elif var == "DELETE":
+            delete_records_table()
+        elif var == "WRITE":
+            write_in_table()
+        elif var == "CREATE TABLE":
+            create_table()
+        elif var == "DELETE TABLE":
+            delete_table()
+        elif var == "ADD USER":
+            add_user()
+        elif var == "DELETE USER":
+            delete_user()
+        elif var == "REINCARNATE USER":
+            reincornarion_user()
+        elif var == "CHANGE NAME":
+            change_name(current_login)
+        elif var == "CHANGE OTHER NAME":
+            change_other_name()
+        elif var == "SHOW TABLE":
+            show_table()
+        elif var == "CHANGE OTHER NAME":
+            change_other_name()
+        else:
+            print("Нет такой команды.\n")
 
 if __name__ == "__main__":
-    init()
+    current_login = init()
+    menu(current_login)
