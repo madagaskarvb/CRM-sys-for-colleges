@@ -8,7 +8,7 @@ import re
 import bd
 
 # Подключение к базе данных
-connection = sqlite3.connect('nn.db')
+connection = sqlite3.connect('db.sqlite3')
 cursor = connection.cursor()
 
 # Функция очистки deleted_users.json (удаляем записи из БД, которым больше 14 дней, а также чистим JSON)
@@ -349,9 +349,12 @@ def show_table(db_path: str, table_name: str):
     except sqlite3.Error as e:
         print(f"Error: {e}")
 
-# Example usage:
-# print_table_contents("my_database.db", "my_table")
-
+def show_users():
+    print("\n=== Список пользователей ===")
+    print("Имя || Логин || Почта || Статус || Роль")
+    for row in cursor.execute("SELECT name, login, email, status, level FROM users"):
+        print(row)
+    print()
 
 # Функция изменения статуса пользователя (только для admin)
 def change_user_status(current_login):
@@ -473,11 +476,15 @@ def menu(current_login):
         elif var == "CHANGE OTHER NAME":
             change_other_name()
         elif var == "SHOW TABLE":
-            show_table()
+            show_table("db.sqlite3", )
         elif var == "CHANGE OTHER NAME":
             change_other_name()
+        elif var  ==  "CHANGE USER STATUS":
+            change_user_status()
+        elif var == "QUIT":
+            break
         else:
-            print("Нет такой команды.\n")
+            print("No such command\n")
 
 if __name__ == "__main__":
     current_login = init()
