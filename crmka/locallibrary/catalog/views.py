@@ -1,23 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
-
 # Create your views here.
 from .models import Student
 
-# def index(request):
-#     """
-#     Функция отображения для домашней страницы сайта.
-#     """
-#     # Генерация "количеств" некоторых главных объектов
-#     num_users = Student.objects.all().count()
-
-#     # Отрисовка HTML-шаблона index.html с данными внутри
-#     # переменной контекста context
-#     return render(
-#         request,
-#         'index.html',
-#         context={'num_users':num_users},
-#     )
 
 def adminPage(request):
     return render(request, 'basikPages/adminPage.html', {'css_file': 'basikPages/adminPage.css'})
@@ -26,7 +11,7 @@ def studentPage(request):
     return render(request, 'basikPages/studentPage.html', {'css_file': 'basikPages/studentPage.css'})
 
 def mainPage(request):
-    return render(request, 'base_generic.html', {'css_file': 'basikPages/mainPage.css'})
+    return render(request, 'basikPages/main.html', {'css_file': 'basikPages/mainPage.css'})
 
 def teacherPage(request):
     return render(request, 'basikPages/teacherPage.html', {'css_file': 'basikPages/teacherPage.css'})
