@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Список учебных материалов</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Автор</th>
+        <th>Дата создания</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for mat in materials %}
+      <tr>
+        <td>{{ mat.material_id }}</td>
+        <td>{{ mat.title }}</td>
+        <td>{{ mat.description }}</td>
+        <td>{{ mat.author }}</td>
+        <td>{{ mat.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><a class="btn-primary" href="{{ url_for('add_new_material') }}">Добавить материал</a></p>
+{% endblock %}

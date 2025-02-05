@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ title if title else "CRM Колледж" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+  <h1>CRM Колледж</h1>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('index') }}">Главная</a></li>
+      <li><a href="{{ url_for('students') }}">Студенты</a></li>
+      <li><a href="{{ url_for('materials') }}">Материалы</a></li>
+      <li><a href="{{ url_for('student_user') }}">ЛК Студента</a></li>
+      <li><a href="{{ url_for('teacher_user') }}">ЛК Преподавателя</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- Внутри base.html оставляем блок контента -->
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>CRM Колледж &copy; 2025</p>
+</footer>
+
+</body>
+</html>

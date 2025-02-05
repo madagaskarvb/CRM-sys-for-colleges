@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRM Колледж – Оценки</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>CRM Колледж</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="students.html">Студенты</a></li>
+        <li><a href="teachers.html">Преподаватели</a></li>
+        <li><a href="materials.html">Материалы</a></li>
+        <li><a href="grades.html" class="active">Оценки</a></li>
+        <li><a href="admin.html">Админ панель</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="grades-section">
+      <h2>Оценки студентов</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Студент</th>
+            <th>Преподаватель</th>
+            <th>Материал (если есть)</th>
+            <th>Оценка</th>
+            <th>Дата выставления</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Иван Иванов</td>
+            <td>Павел Сидоров</td>
+            <td>Алгоритмы и структуры данных</td>
+            <td>9.00</td>
+            <td>05.02.2025</td>
+          </tr>
+          <tr>
+            <td>Мария Петрова</td>
+            <td>Наталья Соколова</td>
+            <td>Финансовый учёт</td>
+            <td>8.50</td>
+            <td>10.02.2025</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="add-grade-section">
+      <h2>Выставить новую оценку</h2>
+      <form action="#" method="post" class="grade-form">
+        <div class="form-group">
+          <label for="grade-student">Студент</label>
+          <select id="grade-student" name="grade-student" required>
+            <option value="">Выберите студента</option>
+            <option value="1">Иван Иванов</option>
+            <option value="2">Мария Петрова</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="grade-teacher">Преподаватель</label>
+          <select id="grade-teacher" name="grade-teacher" required>
+            <option value="">Выберите преподавателя</option>
+            <option value="1">Павел Сидоров</option>
+            <option value="2">Наталья Соколова</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="grade-material">Материал (если есть)</label>
+          <select id="grade-material" name="grade-material">
+            <option value="">Без привязки</option>
+            <option value="1">Алгоритмы и структуры данных</option>
+            <option value="2">Финансовый учёт</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="grade-value">Оценка</label>
+          <input type="number" step="0.01" min="0" max="10" id="grade-value" name="grade-value" required />
+        </div>
+        <button type="submit" class="btn-primary">Сохранить оценку</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>CRM Колледж &copy; 2025</p>
+  </footer>
+</body>
+</html>

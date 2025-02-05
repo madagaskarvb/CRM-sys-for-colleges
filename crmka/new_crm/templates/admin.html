@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>CRM Колледж – Админ панель</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>CRM Колледж</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Главная</a></li>
+        <li><a href="students.html">Студенты</a></li>
+        <li><a href="teachers.html">Преподаватели</a></li>
+        <li><a href="materials.html">Материалы</a></li>
+        <li><a href="grades.html">Оценки</a></li>
+        <li><a href="admin.html" class="active">Админ панель</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="admin-panel">
+      <h2>Админ панель</h2>
+      <p>Здесь администратор может управлять системой: создавать факультеты, редактировать пользователей, настраивать роли и права доступа и т.д.</p>
+      
+      <!-- Пример блока для управления факультетами -->
+      <div class="admin-section">
+        <h3>Управление факультетами</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Название</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Информатика</td>
+              <td>Факультет информационных технологий</td>
+            </tr>
+            <tr>
+              <td>Экономика</td>
+              <td>Факультет экономических наук</td>
+            </tr>
+          </tbody>
+        </table>
+        <form class="add-faculty-form" action="#" method="post">
+          <div class="form-group">
+            <label for="faculty-name">Название факультета</label>
+            <input type="text" id="faculty-name" name="faculty-name" required />
+          </div>
+          <div class="form-group">
+            <label for="faculty-desc">Описание</label>
+            <textarea id="faculty-desc" name="faculty-desc"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Добавить</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>CRM Колледж &copy; 2025</p>
+  </footer>
+</body>
+</html>
