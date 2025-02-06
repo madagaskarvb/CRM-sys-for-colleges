@@ -1,3 +1,44 @@
+        /* Фоновое изображение для всей страницы */
+        body {
+            background-image: url("{% static 'images/photo.png' %}"); /* Путь к изображению через static */
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Затемнение фона для улучшения читаемости текста */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: -1;
+        }
+
+        /* Стили для основного контента */
+        main {
+            position: relative;
+            z-index: 1; 
+            padding: 100px;
+            color: #75D113; /* Цвет текста */
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5); 
+        }
+
+        h2 {
+            font-size: 4rem; 
+            margin-bottom: 70px; 
+        }
+
+        p {
+            font-size: 2.0rem; 
+        }
+
 body {
   background-image: url("{% static 'images/photo.png' %}");
   background-size: cover; 
