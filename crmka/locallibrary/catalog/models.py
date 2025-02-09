@@ -1,106 +1,123 @@
 from django.db import models
 
-# Модель для факультетов
 class Faculty(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Название факультета")
-    description = models.TextField(verbose_name="Описание факультета", blank=True, null=True)
-    
-    class Meta:
-        db_table = "faculties"
-        verbose_name = "Факультет"
-        verbose_name_plural = "Факультеты"
-    
-    def __str__(self):
+    faculty_id = models.AutoField(primary_key=True)
+    faculty_name = models.TextField()
+
+    def str(self):
+        return self.faculty_name
+
+
+class Teachers(models.Model):
+    teacher_id = models.AutoField(primary_key=True)
+    full_name = models.TextField()
+    date_of_birth = models.DateTimeField()
+    email = models.TextField()
+    phone = models.IntegerField()
+    password = models.TextField()
+    hire_date = models.DateTimeField()
+
+    def str(self):
+        return self.full_name
+
+
+class Subjects(models.Model):
+    subject_id = models.AutoField(primary_key=True)
+    teacher = models.ForeignKey(
+        Teachers,
+        on_delete=models.CASCADE,
+        db_column='teacher_id'
+    )
+    name = models.TextField()
+
+    def str(self):
         return self.name
 
-# Модель для студентов
-class Student(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Имя студента")
-    login = models.CharField(max_length=150, unique=True, verbose_name="Логин")
-    email = models.EmailField(verbose_name="Email")
-    status = models.CharField(max_length=150, default="Активный", verbose_name="Статус")
-    password = models.CharField(max_length=150, verbose_name="Пароль")
-    # Связь со факультетом (может быть не указана)
+
+class Groups(models.Model):
+    group_id = models.AutoField(primary_key=True)
+    group_name = models.TextField(unique=True)
     faculty = models.ForeignKey(
         Faculty,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Факультет"
+        on_delete=models.CASCADE,
+        db_column='faculty'
     )
-    
-    class Meta:
-        db_table = "students"
-        verbose_name = "Студент"
-        verbose_name_plural = "Студенты"
-    
-    def __str__(self):
-        return self.name
+    study_year = models.IntegerField()
 
-# Модель для преподавателей
-class Teacher(models.Model):
-    name = models.CharField(max_length=150, verbose_name="Имя преподавателя")
-    login = models.CharField(max_length=150, unique=True, verbose_name="Логин")
-    email = models.EmailField(verbose_name="Email")
-    status = models.CharField(max_length=150, default="Активный", verbose_name="Статус")
-    password = models.CharField(max_length=150, verbose_name="Пароль")
-    # Дополнительные поля для преподавателя:
-    subject = models.CharField(max_length=150, verbose_name="Предмет", blank=True, null=True)
-    bio = models.TextField(verbose_name="Биография", blank=True, null=True)
-    # Связь со факультетом (может быть не указана)
-    faculty = models.ForeignKey(
-        Faculty,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Факультет"
+    def str(self):
+        return self.group_name
+
+
+class Students(models.Model):
+    student_id = models.AutoField(primary_key=True)
+    full_name = models.TextField()
+    date_of_birth = models.DateTimeField()
+    email = models.TextField()
+    contact_phone = models.IntegerField()
+    password = models.TextField()
+    group = models.ForeignKey(
+        Groups,
+        on_delete=models.CASCADE,
+        db_column='group_id'
     )
-    
-    class Meta:
-        db_table = "teachers"
-        verbose_name = "Преподаватель"
-        verbose_name_plural = "Преподаватели"
-    
-    def __str__(self):
-        return self.name
 
-# Модель для учебных материалов
-class EducationalMaterial(models.Model):
-    title = models.CharField(max_length=250, verbose_name="Название")
-    description = models.TextField(verbose_name="Описание", blank=True, null=True)
-    file = models.FileField(upload_to='materials/', verbose_name="Файл", blank=True, null=True)
-    # Преподаватель, загрузивший материал
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name="Преподаватель")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    
-    class Meta:
-        db_table = "educational_materials"
-        verbose_name = "Учебный материал"
-        verbose_name_plural = "Учебные материалы"
-    
-    def __str__(self):
-        return self.title
+    def str(self):
+        return self.full_name
 
-# Модель для оценок студентов
-class Grade(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Студент")
-    teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, verbose_name="Преподаватель")
-    # Опциональная привязка к учебному материалу (например, если оценка за выполнение задания)
-    material = models.ForeignKey(
-        EducationalMaterial,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name="Учебный материал"
+
+class EducationalMaterials(models.Model):
+    material_id = models.AutoField(primary_key=True)
+    subject = models.ForeignKey(
+        Subjects,
+        on_delete=models.CASCADE,
+        db_column='subject_id'
     )
-    grade = models.DecimalField(max_digits=4, decimal_places=2, verbose_name="Оценка")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата выставления оценки")
-    
+    unit = models.IntegerField()
+    topic_name = models.TextField()
+    material_type = models.TextField()
+    material_source = models.TextField()
+
+    def str(self):
+        return f"{self.topic_name} ({self.material_id})"
+
+
+class Grades(models.Model):
+    grade_id = models.AutoField(primary_key=True)
+    student = models.ForeignKey(
+        Students,
+        on_delete=models.CASCADE,
+        db_column='student_id'
+    )
+    subject = models.ForeignKey(
+        Subjects,
+        on_delete=models.CASCADE,
+        db_column='subject_id'
+    )
+    grade = models.IntegerField()
+
+    def str(self):
+        return f"Grade {self.grade} for {self.student}"
+
+
+class GroupSubject(models.Model):
+    """
+    Промежуточная таблица (Many-to-many) для связи
+    между группами (Groups) и предметами (Subjects).
+    """
+    group = models.ForeignKey(
+        Groups,
+        on_delete=models.CASCADE,
+        db_column='group_id'
+    )
+    subject = models.ForeignKey(
+        Subjects,
+        on_delete=models.CASCADE,
+        db_column='subject_id'
+    )
+
     class Meta:
-        db_table = "grades"
-        verbose_name = "Оценка"
-        verbose_name_plural = "Оценки"
-    
-    def __str__(self):
-        return f"{self.student.name} - {self.grade}"
+        # Если нужно уникальное сочетание (group_id, subject_id), то можно задать:
+        unique_together = ('group', 'subject')
+
+    def str(self):
+        return f"{self.group} - {self.subject}"
