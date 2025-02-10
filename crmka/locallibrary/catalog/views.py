@@ -37,6 +37,18 @@ def passwordResetEmailPage(request):
 def passwordResetFormPage(request):
     return render(request, 'registration/password_reset_form.html', {'css_file': 'registration/password_reset_form.css'})
 
+def listOfStudentsPage(request):
+    return render(request, 'basikPages/listOfStudents.html', {'css_file': 'basikPages/listOfStudents.css'})
+
+def listOfTeachersPage(request):
+    return render(request, 'basikPages/listOfTeachers.html', {'css_file': 'basikPages/listOfTeachers.css'})
+
+def EducationMaterialsPage(request):
+    return render(request, 'basikPages/EducationMaterials.html', {'css_file': 'basikPages/EducationMaterials.css'})
+
+def PageForChangeNamePage(request):
+    return render(request, 'basikPages/PageForChangeName.html', {'css_file': 'basikPages/PageForChangeName.css'})
+
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'
     
