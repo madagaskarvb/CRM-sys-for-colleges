@@ -7,54 +7,6 @@ from crmka.locallibrary.catalog.models import Faculty, Students, Teachers, Educa
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
 django.setup()
 
-def create_dynamic_table(app_name):
-    """
-    Dynamically create a model and generate migrations for the specified table.
-    
-    Parameters:
-        app_name (str): The name of the Django app where the model will be defined.
-        table_name (str): The name of the table to be created.
-        fields (list of tuples): A list of tuples containing field name and field type.
-                                Example: [('name', 'CharField', {'max_length': 100}), ('age', 'IntegerField', {})]
-    """
-
-    table_name = input("Table name: ")
-    fields = input("Fields: ")
-
-    # Define the model as a new class
-    class Meta:
-        app_label = app_name
-
-    # Dynamically create the model class
-    model_class = type(table_name, (models.Model,), {'__module__': app_name, 'Meta': Meta})
-
-    for field in fields:
-        field_name, field_type, field_options = field
-        field_class = getattr(models, field_type)  # Get the corresponding Django field class
-        model_class.add_to_class(field_name, field_class(**field_options))
-
-    # Write the model to the app's models.py file
-    app_model_file = os.path.join(app_name, 'models.py')
-
-    # Read the current content of models.py
-    with open(app_model_file, 'r') as file:
-        model_code = file.read()
-
-    # Add the new model code at the end of models.py
-    with open(app_model_file, 'a') as file:
-        model_code += f"\n\nclass {table_name}(models.Model):\n"
-        for field in fields:
-            field_name, field_type, field_options = field
-            field_class = getattr(models, field_type)
-            file.write(f"    {field_name} = models.{field_type}({', '.join([f'{k}={v}' for k, v in field_options.items()])})\n")
-
-    # Generate migrations
-    call_command('makemigrations', app_name)
-    call_command('migrate')
-
-    print(f"Table '{table_name}' created successfully with the following fields: {fields}")
-
-
 def changes_in_table(model_class):
     set_field = input("Field to update: ")
     new_value = input("New value: ")

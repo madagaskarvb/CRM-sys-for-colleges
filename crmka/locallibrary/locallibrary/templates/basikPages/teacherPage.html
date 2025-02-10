@@ -1,22 +1,21 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/basikPages/teacherPage.css' %}" />
     <title>Личный кабинет преподавателя</title>
-    <link rel="stylesheet" href="{% static 'css/basikPages/teacherPage.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>Личный кабинет преподавателя</h1>
         
         <!-- Кнопки для действий -->
-        <a href="#" class="button">Посмотреть учебные материалы</a>
         <a href="#" class="button">Добавить учебные материалы</a>
-        <a href="#" class="button">Посмотреть преподавателей и предметы</a>
-        <a href="#" class="button">Поменять личную информацию</a>
+        <a href="#" class="button">Посмотреть преподавателей</a>
         <a href="#" class="button">Посмотреть студентов</a>
+        <a href="#" class="button">Поменять личную информацию</a>
         <a href="#" class="button delete">Удалить аккаунт</a>
     </div>
 </body>
