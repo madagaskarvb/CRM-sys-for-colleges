@@ -1,159 +1,120 @@
- import sqlite3
-import hashlib
-import json
-from datetime import datetime, timedelta
+import django
 import os
-import sys
-import re
-import bd
+from django.core.management import execute_from_command_line, call_command
+from django.db import models, connection
+from crmka.locallibrary.catalog.models import Faculty, Students, Teachers, EducationalMaterials, Grades, GroupSubject, Groups, Subjects
 
-# Подключение к базе данных
-connection = sqlite3.connect('db.sqlite3')
-cursor = connection.cursor()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
+django.setup()
 
-
-def changes_in_table():
-    name = input("Table name: ")
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}'")
-    table_exists = cursor.fetchone()
-    if not table_exists:
-        # If the table does not exist, print a message
-        print(f"Table '{name}' does not exist.")
-        return
-    
-    set = input("SET: ")
-    where = input("WHERE: ")
-    try:
-        cursor.execute(f"UPDATE {name} SET {set} WHERE {where}")
-        connection.commit()
-        print("Data added!")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
-
-def delete_records_table():
-    name = input("Table name: ")
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}'")
-    table_exists = cursor.fetchone()
-    if not table_exists:
-        # If the table does not exist, print a message
-        print(f"Table '{name}' does not exist.")
-        return
-
-    where = input("DELETE WHERE: ")
-    cursor.execute(f"DELETE FROM {name} WHERE {where}")
-
-def write_in_table():
-    name = input("Table name: ")
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{name}'")
-    table_exists = cursor.fetchone()
-    if not table_exists:
-        # If the table does not exist, print a message
-        print(f"Table '{name}' does not exist.")
-        return
-
-    data = input("Input data: ")
-    try:
-        cursor.execute(f"""INSERT INTO {name} VALUES {data}""")
-        connection.commit()
-        print("Data added!")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
-
-def create_table():
-    table_name = input("Enter the name of the table: ").strip()
-
-    cursor.execute(f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table_name}'")
-    table_exists = cursor.fetchone()
-
-    if not table_exists:
-        # If the table does not exist, print a message
-        print(f"Table '{table_name}' does not exist.")
-        return
-
-    table_name = input("Enter the name of the table: ").strip()
-    table_attributes = input(f"Enter the attributes for the table '{table_name}': ").strip()
-    create_table_query = f"CREATE TABLE {table_name} ({table_attributes});"
-
-    try:
-        cursor.execute(create_table_query)
-        connection.commit()
-        print(f"Table '{table_name}' created successfully.")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
-
-def delete_table():
-    table_delete = input("Name of table to delete: ")
-    cursor.execute(f"DROP TABLE IF EXISTS {table_delete}")
-    connection.commit()
-    print("Table deleted!")
-
-def is_valid_email(email):
-        if re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email) is not None:
-            return True
-        else:
-            return False
-
-def show_table(db_path: str):
+def create_dynamic_table(app_name):
     """
-    Prints the contents of the specified SQLite table.
+    Dynamically create a model and generate migrations for the specified table.
     
-    :param db_path: Path to the SQLite database file.
-    :param table_name: Name of the table to print.
+    Parameters:
+        app_name (str): The name of the Django app where the model will be defined.
+        table_name (str): The name of the table to be created.
+        fields (list of tuples): A list of tuples containing field name and field type.
+                                Example: [('name', 'CharField', {'max_length': 100}), ('age', 'IntegerField', {})]
     """
-    try:
-        # Connect to the SQLite database
-        
-        # Fetch column names
-        table_name = input("Table name: ")
-        cursor.execute(f"PRAGMA table_info({table_name})")
-        columns = [col[1] for col in cursor.fetchall()]
-        
-        # Fetch table contents
-        cursor.execute(f"SELECT * FROM {table_name}")
-        rows = cursor.fetchall()
-        
-        # Print column headers
-        print(" | ".join(columns))
-        print("-" * (len(" | ".join(columns)) + 5))
-        
-        # Print rows
-        for row in rows:
-            print(" | ".join(str(value) for value in row))
 
-    except sqlite3.Error as e:
-        print(f"Error: {e}")
+    table_name = input("Table name: ")
+    fields = input("Fields: ")
+
+    # Define the model as a new class
+    class Meta:
+        app_label = app_name
+
+    # Dynamically create the model class
+    model_class = type(table_name, (models.Model,), {'__module__': app_name, 'Meta': Meta})
+
+    for field in fields:
+        field_name, field_type, field_options = field
+        field_class = getattr(models, field_type)  # Get the corresponding Django field class
+        model_class.add_to_class(field_name, field_class(**field_options))
+
+    # Write the model to the app's models.py file
+    app_model_file = os.path.join(app_name, 'models.py')
+
+    # Read the current content of models.py
+    with open(app_model_file, 'r') as file:
+        model_code = file.read()
+
+    # Add the new model code at the end of models.py
+    with open(app_model_file, 'a') as file:
+        model_code += f"\n\nclass {table_name}(models.Model):\n"
+        for field in fields:
+            field_name, field_type, field_options = field
+            field_class = getattr(models, field_type)
+            file.write(f"    {field_name} = models.{field_type}({', '.join([f'{k}={v}' for k, v in field_options.items()])})\n")
+
+    # Generate migrations
+    call_command('makemigrations', app_name)
+    call_command('migrate')
+
+    print(f"Table '{table_name}' created successfully with the following fields: {fields}")
+
+
+def changes_in_table(model_class):
+    set_field = input("Field to update: ")
+    new_value = input("New value: ")
+    filter_field = input("Filter field: ")
+    filter_value = input("Filter value: ")
+    
+    update_count = model_class.objects.filter(**{filter_field: filter_value}).update(**{set_field: new_value})
+    if update_count:
+        print("Data updated successfully!")
+    else:
+        print("No matching records found.")
+
+
+def delete_records_table(model_class):
+    filter_field = input("Filter field: ")
+    filter_value = input("Filter value: ")
+    deleted_count, _ = model_class.objects.filter(**{filter_field: filter_value}).delete()
+    print(f"Deleted {deleted_count} records.")
+
+
+def write_in_table(model_class):
+    fields = {field.name: input(f"Enter {field.name}: ") for field in model_class._meta.fields if field.name != 'id'}
+    instance = model_class.objects.create(**fields)
+    print(f"Record added: {instance}")
+
+
+def show_table(model_class):
+    print(" | ".join([field.name for field in model_class._meta.fields]))
+    for obj in model_class.objects.all():
+        print(" | ".join(str(getattr(obj, field.name)) for field in model_class._meta.fields))
 
 def menu():
+    model_mapping = {"faculty" : Faculty, "student" : Students, 
+                    "teacher" : Teachers, "educationalmaterial" : EducationalMaterials, "grade" : Grades,
+                    "groupsubject" : GroupSubject, "subjects" : Subjects,  "groups" : Groups
+}  # Add your models here
+    
     while True:
-        # print("Выберите действие:")
-        # print(" 1 - Удалить пользователя (пометка на удаление)")
-        # print(" 2 - Добавить пользователя")
-        # print(" 3 - Поменять своё имя")
-        # print(" 4 - Отобразить всех пользователей")
-        # print(" 5 - Восстановить «Удалённого» пользователя")
-        # print(" 6 - Изменить статус пользователя (Активный/Не активен)")
-        # print(" 7 - Изменить имя другого пользователя")
-        # print(" 0 - Выйти")
-
-        var = input("ACTION: ")
-
-        if var == "CHANGES IN":
-            changes_in_table()
-        elif var == "DELETE IN":
-            delete_records_table()
-        elif var == "WRITE IN":
-            write_in_table()
-        elif var == "CREATE TABLE":
-            create_table()
-        elif var == "DELETE TABLE":
-            delete_table()
-        elif var == "SHOW TABLE":
-            show_table("db.sqlite3")
-        elif var == "QUIT":
-            connection.close()
+        action = input("ACTION: ").strip().upper()
+        if action == "CHANGES IN":
+            model_name = input("Model name: ").lower()
+            if model_name in model_mapping:
+                changes_in_table(model_mapping[model_name])
+        elif action == "DELETE IN":
+            model_name = input("Model name: ").lower()
+            if model_name in model_mapping:
+                delete_records_table(model_mapping[model_name])
+        elif action == "WRITE IN":
+            model_name = input("Model name: ").lower()
+            if model_name in model_mapping:
+                write_in_table(model_mapping[model_name])
+        elif action == "SHOW TABLE":
+            model_name = input("Model name: ").lower()
+            if model_name in model_mapping:
+                show_table(model_mapping[model_name])
+        elif action == "QUIT":
             break
         else:
             print("No such command\n")
+
 
 if __name__ == "__main__":
     menu()
