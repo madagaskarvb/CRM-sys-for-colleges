@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
 # Create your views here.
-from .models import Student
+from .models import Students
 
 
 def adminPage(request):

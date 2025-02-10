@@ -1,15 +1,15 @@
 from django import forms
-from .models import Student
+from .models import Students
 
 class UserAdminForm(forms.ModelForm):
     class Meta:
-        model = Student
-        fields = ['name', 'login', 'email', 'status', 'password']  # Поля для ввода
+        model = Students
+        fields = ['full_name', 'date_of_birth', 'email', 'contact_phone', 'password', 'group']  # Поля для ввода
 
 
     def clean(self):
         cleaned_data = super().clean()
-        required_fields = ['name', 'login', 'email', 'password', 'status']
+        required_fields = ['full_name', 'date_of_birth', 'email', 'contact_phone', 'password', 'group']
         for field in required_fields:
             if not cleaned_data.get(field):
 
