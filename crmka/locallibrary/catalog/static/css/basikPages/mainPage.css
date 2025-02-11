@@ -1,6 +1,7 @@
+/* Основные стили для body */
 body {
   background-image: url("{% static 'images/photo.png' %}");
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -8,83 +9,94 @@ body {
   padding: 0;
   font-family: Arial, sans-serif;
   color: #74186e96;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  min-height: 100vh; /* Занимает всю высоту окна */
 }
 
+/* Стили для текста с эффектом волны */
 .wavy-text {
-  font-size: 48px; 
-  font-weight: bold; 
-  color: #74186e96; 
+  font-size: 5vw; /* Размер текста зависит от ширины окна */
+  font-weight: bold;
+  color: #74186e96;
   position: relative;
   display: inline-block;
 }
 
 .wavy-text::before {
-  content: attr(data-text); 
+  content: attr(data-text);
   position: absolute;
   top: 0;
   left: 0;
-  color: transparent; 
-  text-shadow: 
-      2px 2px 0 #71cf594b, 
-      -2px -2px 0 #6b126ff3, 
-      4px 4px 0 #000000f1,
-      -4px -4px 0 #ea19ea; 
-  z-index: -1; 
-  animation: wave 1s infinite alternate; 
+  color: transparent;
+  text-shadow:
+    2px 2px 0 #71cf594b,
+    -2px -2px 0 #6b126ff3,
+    4px 4px 0 #000000f1,
+    -4px -4px 0 #ea19ea;
+  z-index: -1;
+  animation: wave 1s infinite alternate;
 }
-
 
 @keyframes wave {
   0% {
-      transform: translateY(0); 
+    transform: translateY(0);
   }
   100% {
-      transform: translateY(10px); 
+    transform: translateY(10px);
   }
 }
 
+/* Стили для header */
 header h1 {
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 1rem 0;
+  font-size: 4vw; /* Размер заголовка зависит от ширины окна */
 }
 
+/* Стили для навигации */
 nav ul {
   list-style: none;
   display: flex;
-  justify-content: flex-start; 
-  gap: 105rem; 
+  justify-content: center;
+  gap: 2vw; /* Расстояние между элементами зависит от ширины окна */
   margin: 0;
   padding: 0;
+  flex-wrap: wrap; /* Перенос элементов на новую строку при необходимости */
 }
 
 nav a {
   color: #bb13d1;
   text-decoration: none;
-  font-size: 1.9rem; 
-  padding: 1.75rem 2.5rem; 
+  font-size: 2vw; /* Размер текста зависит от ширины окна */
+  padding: 1rem 2rem;
   border-radius: 5px;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease;
 }
 
 nav a:hover {
   background-color: rgba(187, 17, 209, 0.252);
 }
 
+/* Стили для main */
 main {
-  max-width: 800px;
+  max-width: 90%; /* Ширина зависит от размера окна */
   margin: 0 auto;
-  padding: 5rem;
+  padding: 2rem;
 }
 
+/* Стили для footer */
 footer {
   color: #75D113;
   text-align: center;
-  padding: 0.5rem;
-  margin-top: 2rem;
+  padding: 1rem;
+  margin-top: auto; /* Прижимаем футер к низу */
+  width: 100%;
 }
 
+/* Стили для таблиц */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -99,6 +111,7 @@ th, td {
   padding: 0.5rem;
 }
 
+/* Стили для форм */
 .form-group {
   margin-bottom: 1rem;
 }
@@ -125,4 +138,76 @@ textarea {
 
 .btn-primary:hover {
   background-color: #000000;
+}
+
+/* Стили для кнопок навигации */
+.nav-button {
+  padding: 1vw 2vw; /* Размер отступов зависит от ширины окна */
+  border: none;
+  border-radius: 5px;
+  font-size: 2vw; /* Размер текста зависит от ширины окна */
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+/* Стиль для кнопки "Главная" */
+.home-btn {
+  background-color: transparent;
+  color: #ff00ff;
+  border: 2px solid #ff00ff;
+}
+
+.home-btn:hover {
+  background-color: #ff00ff;
+  color: white;
+}
+
+/* Стиль для кнопки "Войти" */
+.login-btn {
+  background-color: #ff00ff;
+  color: white;
+  box-shadow: 0 2px 4px rgba(255, 0, 255, 0.2);
+}
+
+.login-btn:hover {
+  background-color: #cc00cc;
+  transform: translateY(-2px);
+}
+
+/* Расположение кнопок */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2vw; /* Отступы зависят от ширины окна */
+  width: 100%;
+  flex-wrap: wrap; /* Перенос кнопок на новую строку при необходимости */
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+  .wavy-text {
+    font-size: 8vw; /* Увеличиваем размер текста на маленьких экранах */
+  }
+
+  header h1 {
+    font-size: 6vw;
+  }
+
+  nav a {
+    font-size: 4vw;
+    padding: 0.5rem 1rem;
+  }
+
+  .nav-button {
+    font-size: 4vw;
+    padding: 1.5vw 3vw;
+  }
+
+  .nav-container {
+    flex-direction: column; /* Кнопки в столбик на маленьких экранах */
+    gap: 1rem;
+  }
 }
