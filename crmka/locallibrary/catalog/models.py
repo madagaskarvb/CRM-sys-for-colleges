@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-
+from django.core.validators import RegexValidator
 
 class Faculty(models.Model):
     faculty_id = models.AutoField(primary_key=True)
@@ -9,18 +9,36 @@ class Faculty(models.Model):
     def __str__(self):
         return self.name or "Неизвестный факультет"
 
+    class Meta:
+        verbose_name = 'Факультет'
+        verbose_name_plural = 'Факультеты'
+
 
 class Teachers(models.Model):
     teacher_id = models.AutoField(primary_key=True)
-    full_name = models.TextField(blank=True, null=True)
-    date_of_birth = models.DateTimeField(default=timezone.now, blank=True, null=True)
-    email = models.TextField(blank=True, null=True)
-    phone = models.IntegerField(blank=True, null=True)
-    password = models.TextField(blank=True, null=True)
-    hire_date = models.DateTimeField(default=timezone.now, blank=True, null=True)
+    full_name = models.CharField(max_length=255, null=True, blank=False)
+    date_of_birth = models.DateField(default=timezone.now, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(
+        max_length=18,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',
+                message="Номер телефона должен быть в формате: '+7 (XXX) XXX-XX-XX'"
+            )
+        ]
+    )
+    password = models.CharField(max_length=255, null=True, blank=False)
+    hire_date = models.DateField(default=timezone.now, blank=True, null=True)
 
     def __str__(self):
         return self.full_name or "Неизвестный преподаватель"
+
+    class Meta:
+        verbose_name = 'Преподаватель'
+        verbose_name_plural = 'Преподаватели'
 
 
 class Subjects(models.Model):
@@ -32,15 +50,19 @@ class Subjects(models.Model):
         blank=True,
         null=True
     )
-    subject_name = models.TextField(blank=True, null=True)
+    subject_name = models.CharField(max_length=255, null=True, blank=False)
 
     def __str__(self):
         return self.subject_name or "Неизвестный предмет"
 
+    class Meta:
+        verbose_name = 'Предмет'
+        verbose_name_plural = 'Предметы'
+
 
 class Groups(models.Model):
     group_id = models.AutoField(primary_key=True)
-    group_name = models.TextField(unique=True, blank=True, null=True)
+    group_name = models.CharField(max_length=255, null=True, blank=False)
     faculty = models.ForeignKey(
         Faculty,
         on_delete=models.CASCADE,
@@ -53,14 +75,28 @@ class Groups(models.Model):
     def __str__(self):
         return self.group_name or "Неизвестная группа"
 
+    class Meta:
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
+
 
 class Students(models.Model):
     student_id = models.AutoField(primary_key=True)
-    full_name = models.TextField(blank=True, null=True)
-    date_of_birth = models.DateTimeField(default=timezone.now, blank=True, null=True)
-    email = models.TextField(blank=True, null=True)
-    contact_phone = models.IntegerField(blank=True, null=True)
-    password = models.TextField(blank=True, null=True)
+    full_name = models.CharField(max_length=255, null=True, blank=False)
+    date_of_birth = models.DateField(default=timezone.now, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    contact_phone = models.CharField(
+        max_length=18,
+        blank=True,
+        null=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',
+                message="Номер телефона должен быть в формате: '+7 (XXX) XXX-XX-XX'"
+            )
+        ]
+    )
+    password = models.CharField(max_length=255, null=True, blank=False)
     group = models.ForeignKey(
         Groups,
         on_delete=models.CASCADE,
@@ -71,6 +107,10 @@ class Students(models.Model):
 
     def __str__(self):
         return self.full_name or "Неизвестный студент"
+
+    class Meta:
+        verbose_name = 'Студент'
+        verbose_name_plural = 'Студенты'
 
 
 class EducationalMaterials(models.Model):
@@ -83,12 +123,16 @@ class EducationalMaterials(models.Model):
         null=True
     )
     unit = models.IntegerField(blank=True, null=True)
-    topic_name = models.TextField(blank=True, null=True)
-    material_type = models.TextField(blank=True, null=True)
-    material_source = models.TextField(blank=True, null=True)
+    topic_name = models.CharField(max_length=255, null=True, blank=False)
+    material_type = models.CharField(max_length=255, null=True, blank=False)
+    material_source = models.CharField(max_length=255, null=True, blank=False)
 
     def __str__(self):
         return f"{self.topic_name or 'Без названия'} ({self.material_id})"
+
+    class Meta:
+        verbose_name = 'Учебный материал'
+        verbose_name_plural = 'Учебные материалы'
 
 
 class Grades(models.Model):
@@ -110,7 +154,11 @@ class Grades(models.Model):
     grade = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        return f"Grade {self.grade if self.grade is not None else 'N/A'} for {self.student}"
+        return f"Оценка {self.grade if self.grade is not None else 'N/A'} для {self.student}"
+
+    class Meta:
+        verbose_name = 'Оценка'
+        verbose_name_plural = 'Оценки'
 
 
 class GroupSubject(models.Model):
@@ -135,6 +183,8 @@ class GroupSubject(models.Model):
 
     class Meta:
         unique_together = ('group', 'subject')
+        verbose_name = 'Группа и предмет'
+        verbose_name_plural = 'Группы и предметы'
 
     def __str__(self):
         return f"{self.group or 'Неизвестная группа'} - {self.subject or 'Неизвестный предмет'}"
