@@ -60,3 +60,78 @@ a {
 a:hover {
     text-decoration: underline;
 } */
+
+
+/* Стили для контейнера формы */
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для полей ввода */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    color: #666;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #ff00ff;
+    outline: none;
+}
+
+/* Стиль для кнопки входа */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff00ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #cc00cc;
+}
+
+/* Стиль для ссылки "Забыли пароль?" */
+.forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #ff00ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Стиль для сообщения об ошибке */
+.error-message {
+    color: #ff4444;
+    font-size: 12px;
+    margin-top: 5px;
+}
