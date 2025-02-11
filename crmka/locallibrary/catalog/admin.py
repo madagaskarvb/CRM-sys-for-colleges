@@ -6,13 +6,13 @@ class UserAdmin(admin.ModelAdmin):
     form = UserAdminForm
 
     # Отображение в списке
-    list_display = ['name', 'login', 'email']
-    search_fields = ['name', 'login', 'email']
+    list_display = ['full_name', 'group', 'email']
+    search_fields = ['full_name', 'group', 'email']
 
     # Поля для редактирования и добавления
     fieldsets = (
         (None, {
-            'fields': ('name', 'login', 'email', 'password')
+            'fields': ('full_name', 'date_of_birth', 'email', 'contact_phone', 'password', 'group')
         }),
     )
 
