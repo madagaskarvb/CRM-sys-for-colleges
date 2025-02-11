@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.views import LoginView
+from django.urls import reverse
+from django.contrib.auth.models import Group
 # Create your views here.
-from .models import Students
+from .models import Students, Teachers
 
 
 def adminPage(request):
@@ -56,3 +58,12 @@ class CustomLoginView(LoginView):
         context = super().get_context_data(**kwargs)
         context['css_file'] = 'registration/login.css'
         return context
+
+    def get_success_url(self):
+        user = self.request.user
+        if user.groups.filter(name='Студенты').exists():  # Проверяем, есть ли у пользователя группа "Студенты"
+            return '/student/'  # URL для студента
+        elif user.groups.filter(name='Преподаватели').exists():  # Проверяем, есть ли у пользователя группа "Преподаватели"
+            return '/teacher/'  # URL для преподавателя
+        else:
+            return '/'

@@ -1,6 +1,11 @@
 from django.db import models
 from django.utils import timezone
-from django.core.validators import RegexValidator
+from django.contrib.auth.models import User, Group
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
 
 class Faculty(models.Model):
     faculty_id = models.AutoField(primary_key=True)
@@ -22,19 +27,20 @@ class Teachers(models.Model):
     phone = models.CharField(
         max_length=18,
         blank=True,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex=r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',
-                message="Номер телефона должен быть в формате: '+7 (XXX) XXX-XX-XX'"
-            )
-        ]
+        null=True
     )
     password = models.CharField(max_length=255, null=True, blank=False)
     hire_date = models.DateField(default=timezone.now, blank=True, null=True)
 
     def __str__(self):
         return self.full_name or "Неизвестный преподаватель"
+
+    def clean(self):
+        super().clean()
+        try:
+            validate_password(self.password, user=self)
+        except ValidationError as e:
+            raise ValidationError({'password': e.messages})
 
     class Meta:
         verbose_name = 'Преподаватель'
@@ -88,13 +94,7 @@ class Students(models.Model):
     contact_phone = models.CharField(
         max_length=18,
         blank=True,
-        null=True,
-        validators=[
-            RegexValidator(
-                regex=r'^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$',
-                message="Номер телефона должен быть в формате: '+7 (XXX) XXX-XX-XX'"
-            )
-        ]
+        null=True
     )
     password = models.CharField(max_length=255, null=True, blank=False)
     group = models.ForeignKey(
@@ -107,6 +107,13 @@ class Students(models.Model):
 
     def __str__(self):
         return self.full_name or "Неизвестный студент"
+
+    def clean(self):
+        super().clean()
+        try:
+            validate_password(self.password, user=self)
+        except ValidationError as e:
+            raise ValidationError({'password': e.messages})
 
     class Meta:
         verbose_name = 'Студент'
@@ -188,3 +195,30 @@ class GroupSubject(models.Model):
 
     def __str__(self):
         return f"{self.group or 'Неизвестная группа'} - {self.subject or 'Неизвестный предмет'}"
+
+
+@receiver(post_save, sender=Students)
+def create_student_user(sender, instance, created, **kwargs):
+    if created:
+        user = User.objects.create_user(
+            username=instance.email,
+            email=instance.email,
+            password=instance.password,
+            first_name=instance.full_name.split()[0],
+            last_name=' '.join(instance.full_name.split()[1:])
+        )
+        student_group = Group.objects.get(name='Студенты')
+        user.groups.add(student_group)
+
+@receiver(post_save, sender=Teachers)
+def create_teacher_user(sender, instance, created, **kwargs):
+    if created:
+        user = User.objects.create_user(
+            username=instance.email,
+            email=instance.email,
+            password=instance.password,
+            first_name=instance.full_name.split()[0],
+            last_name=' '.join(instance.full_name.split()[1:])
+        )
+        teacher_group = Group.objects.get(name='Преподаватели')
+        user.groups.add(teacher_group)
