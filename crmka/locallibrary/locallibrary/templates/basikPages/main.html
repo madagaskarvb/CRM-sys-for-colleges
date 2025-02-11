@@ -1,5 +1,5 @@
 {% extends "base_generic.html" %}
-{% load static %} 
+{% load static %}
 
 {% block content %}
 <!DOCTYPE html>
@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css">
     <style>
-                /* Фоновое изображение для всей страницы */
-                body {
+        /* Фоновое изображение для всей страницы */
+        body {
             background-image: url("{% static 'images/photo.png' %}"); /* Путь к изображению через static */
             background-size: cover; 
             background-position: center;
@@ -19,7 +19,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         /* Затемнение фона для улучшения читаемости текста */
         body::after {
             content: '';
@@ -35,10 +35,10 @@
         /* Стили для основного контента */
         main {
             position: relative;
-            z-index: 1; 
+            z-index: 1;
             padding: 100px;
             color: #75D113; /* Цвет текста */
-            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5); 
+            text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
         }
 
         h2 {
@@ -50,15 +50,105 @@
             font-size: 2.0rem; 
         }
 
+        /* Стили для текста с эффектом волны */
+        .wavy-text {
+            font-size: 5vw; /* Размер текста зависит от ширины окна */
+            font-weight: bold;
+            color: #74186e96;
+            position: relative;
+            display: inline-block;
+        }
+
+        .wavy-text::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: transparent;
+            text-shadow:
+                2px 2px 0 #71cf594b,
+                -2px -2px 0 #6b126ff3,
+                4px 4px 0 #000000f1,
+                -4px -4px 0 #ea19ea;
+            z-index: -1;
+            animation: wave 1s infinite alternate;
+        }
+
+        @keyframes wave {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
+        
+        /* Стили для нижних кнопок */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 2vw; /* Расстояние между кнопками */
+            padding: 2vw;
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .nav-button {
+            padding: 1vw 2vw;
+            border: none;
+            border-radius: 5px;
+            font-size: 2vw;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .home-btn {
+            background-color: transparent;
+            color: #ff00ff;
+            border: 2px solid #ff00ff;
+        }
+
+        .home-btn:hover {
+            background-color: #ff00ff;
+            color: white;
+        }
+
+        .login-btn {
+            background-color: #ff00ff;
+            color: white;
+            box-shadow: 0 2px 4px rgba(255, 0, 255, 0.2);
+        }
+
+        .login-btn:hover {
+            background-color: #cc00cc;
+            transform: translateY(-2px);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 768px) {
+            .wavy-text {
+                font-size: 8vw; /* Увеличиваем размер текста на маленьких экранах */
+            }
+
+            main {
+                padding: 50px;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
     </style>
-    <body>
-      <div class="wavy-text" data-text="Добро пожаловать в CRM Колледжа">Добро пожаловать в CRM Колледжа</div>
-  </body>
 </head>
 <body>
+    <div class="wavy-text" data-text="Добро пожаловать в CRM Колледжа">Добро пожаловать в CRM Колледжа</div>
     <main>
         <section class="welcome">
-            <p>Управляйте студентами, преподавателями и учебными материалами с легкостью.</p>
+            <p>Хорошего времяпровождения на нашем сайте :) </p>
         </section>
     </main>
 </body>
