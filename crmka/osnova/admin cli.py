@@ -1,68 +1,104 @@
-import django
-import os
-from django.core.management import execute_from_command_line, call_command
-from django.db import models, connection
-from crmka.locallibrary.catalog.models import Faculty, Students, Teachers, EducationalMaterials, Grades, GroupSubject, Groups, Subjects
+import sqlite3
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project.settings')
-django.setup()
+conn = sqlite3.connect('crmka/locallibrary/db.sqlite3')
+cursor = conn.cursor()
 
-def changes_in_table(model_class):
+def changes_in_table():
+    table_name = input("Table name: ")
     set_field = input("Field to update: ")
     new_value = input("New value: ")
     filter_field = input("Filter field: ")
     filter_value = input("Filter value: ")
     
-    update_count = model_class.objects.filter(**{filter_field: filter_value}).update(**{set_field: new_value})
-    if update_count:
+    # Execute the update query
+    query = f"UPDATE catalog_{table_name} SET {set_field} = ? WHERE {filter_field} = ?"
+    cursor.execute(query, (new_value, filter_value))
+
+    try:
+        conn.commit()
         print("Data updated successfully!")
-    else:
-        print("No matching records found.")
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
 
 
-def delete_records_table(model_class):
+def delete_records_table():
+    table_name = input("Table name: ")
     filter_field = input("Filter field: ")
     filter_value = input("Filter value: ")
-    deleted_count, _ = model_class.objects.filter(**{filter_field: filter_value}).delete()
-    print(f"Deleted {deleted_count} records.")
+    
+    query = f"DELETE FROM catalog_{table_name} WHERE {filter_field} = ?"
+    cursor.execute(query, (filter_value,))
+
+    try:
+        conn.commit()
+        print("Record deleted!")
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+
+    
+import sqlite3
+
+def write_in_table():
+    table_name = input("Table name: ")
+    try:
+        cursor.execute(f"PRAGMA table_info(catalog_{table_name})")
+        columns = [row[1] for row in cursor.fetchall() if row[1] != 'id']
+        
+        if not columns:
+            print("No columns found in the table (or only 'id' column exists).")
+            return
+        
+        fields = {column: input(f"Enter {column}: ") for column in columns}
+        
+        columns_str = ", ".join(fields.keys())
+        values_str = ", ".join("?" * len(fields))
+        query = f"INSERT INTO catalog_{table_name} ({columns_str}) VALUES ({values_str})"
+        
+        cursor.execute(query, tuple(fields.values()))
+        
+        print(f"Record added: {fields}")
+        
+        conn.commit()
+    
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+    
 
 
-def write_in_table(model_class):
-    fields = {field.name: input(f"Enter {field.name}: ") for field in model_class._meta.fields if field.name != 'id'}
-    instance = model_class.objects.create(**fields)
-    print(f"Record added: {instance}")
+def show_table():
+    table_name = input("Table name: ")
+    cursor.execute(f"PRAGMA table_info(catalog_{table_name})")
+    columns = [row[1] for row in cursor.fetchall()]
+    
+    print(" | ".join(columns))
+    
+    cursor.execute(f"SELECT * FROM catalog_{table_name}")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(" | ".join(str(value) for value in row))
 
-
-def show_table(model_class):
-    print(" | ".join([field.name for field in model_class._meta.fields]))
-    for obj in model_class.objects.all():
-        print(" | ".join(str(getattr(obj, field.name)) for field in model_class._meta.fields))
 
 def menu():
-    model_mapping = {"faculty" : Faculty, "student" : Students, 
-                    "teacher" : Teachers, "educationalmaterial" : EducationalMaterials, "grade" : Grades,
-                    "groupsubject" : GroupSubject, "subjects" : Subjects,  "groups" : Groups
-}  # Add your models here
     
     while True:
         action = input("ACTION: ").strip().upper()
         if action == "CHANGES IN":
-            model_name = input("Model name: ").lower()
-            if model_name in model_mapping:
-                changes_in_table(model_mapping[model_name])
+            changes_in_table()
         elif action == "DELETE IN":
-            model_name = input("Model name: ").lower()
-            if model_name in model_mapping:
-                delete_records_table(model_mapping[model_name])
+            delete_records_table()
         elif action == "WRITE IN":
-            model_name = input("Model name: ").lower()
-            if model_name in model_mapping:
-                write_in_table(model_mapping[model_name])
+            write_in_table()
         elif action == "SHOW TABLE":
-            model_name = input("Model name: ").lower()
-            if model_name in model_mapping:
-                show_table(model_mapping[model_name])
+            show_table()
+        elif action == "HELP":
+            print("""
+                CHANGES IN - change a table's field
+                DELETE IN - delete a record from a table
+                WRITE IN - write in a table
+                SHOW TABLE - prints a table's contents
+            """)
         elif action == "QUIT":
+            conn.close()
             break
         else:
             print("No such command\n")

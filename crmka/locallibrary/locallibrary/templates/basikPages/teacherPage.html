@@ -12,10 +12,10 @@
         <h1>Личный кабинет преподавателя</h1>
         
         <!-- Кнопки для действий -->
-        <a href="#" class="button">Добавить учебные материалы</a>
-        <a href="#" class="button">Посмотреть преподавателей</a>
-        <a href="#" class="button">Посмотреть студентов</a>
-        <a href="#" class="button">Поменять личную информацию</a>
+        <a href="{% url 'education_materials' %}" class="button">Добавить учебные материалы</a>
+        <a href="{% url 'list_of_teachers' %}" class="button">Посмотреть преподавателей</a>
+        <a href="{% url 'list_of_students' %}" class="button">Посмотреть студентов</a>
+        <a href="{% url 'page_for_change_name' %}" class="button">Поменять личную информацию</a>
         <a href="#" class="button delete">Удалить аккаунт</a>
     </div>
 </body>

@@ -29,11 +29,11 @@ body {
   color: transparent; 
   text-shadow: 
       2px 2px 0 #71cf594b, 
-      -2px -2px 0 #a02aa6f3, 
+      -2px -2px 0 #6b126ff3, 
       4px 4px 0 #000000f1,
       -4px -4px 0 #ea19ea; 
   z-index: -1; 
-  animation: wave 2s infinite alternate; 
+  animation: wave 1s infinite alternate; 
 }
 
 

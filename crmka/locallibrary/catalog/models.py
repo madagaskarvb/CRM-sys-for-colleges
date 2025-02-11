@@ -4,10 +4,10 @@ from django.utils import timezone
 
 class Faculty(models.Model):
     faculty_id = models.AutoField(primary_key=True)
-    faculty_name = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255, null=False, blank=False)
 
     def __str__(self):
-        return self.faculty_name or "Неизвестный факультет"
+        return self.name or "Неизвестный факультет"
 
 
 class Teachers(models.Model):
