@@ -1,6 +1,121 @@
 {% extends "base_generic.html" %}
 {% block content %}
 
+<style>
+    /* Стили для контейнера формы */
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Стили для групп ввода */
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .input-group .input-field {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .input-group .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
+
+    /* Стили для кнопки входа */
+    .login-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #ff00ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .login-btn:hover {
+        background-color: #cc00cc;
+    }
+
+    /* Стили для ссылки "Забыли пароль?" */
+    .forgot-password {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        color: #ff00ff;
+        text-decoration: none;
+    }
+
+    .forgot-password:hover {
+        text-decoration: underline;
+    }
+
+    /* Стили для сообщений об ошибках */
+    .error-message {
+        color: red;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="login-container">
+    {% if form.errors %}
+        <p class="error-message">Ваше имя пользователя и пароль не совпадают. Попробуйте еще раз.</p>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <p class="error-message">У вашей учетной записи нет доступа к этой странице. Чтобы продолжить, войдите в систему с учетной записью, у которой есть доступ.</p>
+        {% else %}
+            <p class="error-message">Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" id="username" name="username" class="input-field" required>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" class="input-field" required>
+            <div class="error-message">Заполните это поле</div>
+        </div>
+
+        <button type="submit" class="login-btn">Войти</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+
+    <a href="{% url 'password_reset' %}" class="forgot-password">Забыли пароль?</a>
+</div>
+
+{% endblock %}
+
+
+<!-- {% extends "base_generic.html" %}
+{% block content %}
+
 
 {% if form.errors %}
   <p>Ваше имя пользователя и пароль не совпадают. Попробуйте еще раз.</p>
@@ -36,4 +151,4 @@
 {# Assumes you setup the password_reset view in your URLconf #}
 <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
 
-{% endblock %}
+{% endblock %} -->
