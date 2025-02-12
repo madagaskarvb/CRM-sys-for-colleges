@@ -67,6 +67,7 @@
             font-size: 1rem;
             margin-bottom: 10px;
         }
+
         .button-container {
             display: flex;
             gap: 20px;
@@ -82,17 +83,22 @@
             border-radius: 8px;
             cursor: pointer;
             transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: #fff;
         }
 
         .button.add {
             background-color: #288429;
-            color: #fff;
             backdrop-filter: blur(100px);
             border: 1px solid rgba(69, 196, 62, 0.2);
             animation: buttonGlow 2s infinite alternate;
-            text-decoration: none;
         }
-</style>
+
+        .button.add:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 <body>
 
@@ -100,15 +106,19 @@
     <h1>Учебные материалы</h1>
 </header>
 
-    <div class="container">
-        <div class="card">
-            <h2>Предмет</h2>
-            <p><a href="добавить_материалы.html" class="button login">Уч материал</a></p>
-        </div>
+<div class="container">
+    {% for material in materials %}
+    <div class="card">
+        <h2>{{ material.subject.subject_name }}</h2>
+        <p>{{ material.topic_name }}</p>
+        <p><a href="{{ material.material_source }}" class="button login"></a></p>
     </div>
+    {% endfor %}
+</div>
 
-    <!-- Кнопка для добавления учебных материалов -->
-    <a href="добавить_материалы.html" class="button add">Добавить учебные материалы</a>
+<!-- Кнопка для добавления учебных материалов -->
+<div class="button-container">
+    <a href="{% url 'add_material' %}" class="button add">Добавить учебные материалы</a>
 </div>
 
 <footer>

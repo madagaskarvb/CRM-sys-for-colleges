@@ -57,17 +57,7 @@ def listOfTeachersPage(request):
 
 def EducationMaterialsPage(request):
     materials = EducationalMaterials.objects.all()
-    grouped_materials = defaultdict(list)
-
-    for material in materials:
-        grouped_materials[material.subject.subject_name].append(material)
-
-    print(grouped_materials)  # Добавьте это для отладки
-
-    return render(request, 'basikPages/EducationMaterials.html', {
-        'grouped_materials': grouped_materials,
-        'css_file': 'basikPages/EducationMaterials.css'
-    })
+    return render(request, 'basikPages/EducationMaterials.html', {'materials': materials})
 
 def PageForChangeNamePage(request):
     return render(request, 'basikPages/PageForChangeName.html', {'css_file': 'basikPages/PageForChangeName.css'})
