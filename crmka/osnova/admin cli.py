@@ -35,9 +35,6 @@ def delete_records_table():
     except sqlite3.Error as e:
         print(f"Error: {e}")
 
-    
-import sqlite3
-
 def write_in_table():
     table_name = input("Table name: ")
     try:
