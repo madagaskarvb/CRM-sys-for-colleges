@@ -1,90 +1,105 @@
 {% extends "base_generic.html" %}
-{% block content %}
 
+{% block content %}
 <style>
-    /* Стили для контейнера формы */
-    .login-container {
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: rgba(98, 88, 88, 0.9);
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    body {
+        background: linear-gradient(135deg, #008000, #CD00CD, #000000);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
     }
 
-    /* Стили для групп ввода */
-    .input-group {
+    .login-container {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        width: 400px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+
+    h2 {
+        font-size: 2rem;
         margin-bottom: 20px;
+    }
+
+    .input-group {
+        margin-bottom: 15px;
+        text-align: left;
     }
 
     .input-group label {
         display: block;
+        font-size: 1rem;
         margin-bottom: 5px;
-        font-weight: bold;
-        color: #333;
     }
 
-    .input-group .input-field {
+    .input-group input {
         width: 100%;
         padding: 10px;
-        border: 1px solid #000000;
-        border-radius: 5px;
-        font-size: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        font-size: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        outline: none;
     }
 
-    .input-group .error-message {
-        color: red; 
-        font-size: 14px;
-        margin-top: 5px;
-        display: none;
+    .input-group input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
     }
 
-    /* Стили для кнопки входа */
     .login-btn {
         width: 100%;
-        padding: 10px;
-        background-color: #ff00ff;
-        color: rgb(255, 255, 255);
+        padding: 12px;
+        margin-top: 10px;
         border: none;
-        border-radius: 5px;
-        font-size: 16px;
+        border-radius: 8px;
+        background: #288429;
+        color: #fff;
+        font-size: 1.2rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .login-btn:hover {
-        background-color: #cc00cc;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(20, 242, 38, 0.3);
     }
 
-    /* Стили для ссылки "Забыли пароль?" */
     .forgot-password {
         display: block;
-        text-align: center;
         margin-top: 10px;
-        color: #ff00ff;
+        color: #CD00CD;
         text-decoration: none;
+        font-size: 1rem;
     }
 
     .forgot-password:hover {
         text-decoration: underline;
     }
 
-    /* Стили для сообщений об ошибках */
     .error-message {
-        color: red;
-        font-size: 14px; 
+        color: #ff4d4d;
+        font-size: 1rem;
         margin-bottom: 10px;
     }
 </style>
 
 <div class="login-container">
+    <h2>Вход в систему</h2>
+
     {% if form.errors %}
-        <p class="error-message">Ваше имя пользователя и пароль не совпадают. Попробуйте еще раз.</p>
+        <p class="error-message">Неверное имя пользователя или пароль. Попробуйте снова.</p>
     {% endif %}
 
     {% if next %}
         {% if user.is_authenticated %}
-            <p class="error-message">У вашей учетной записи нет доступа к этой странице. Чтобы продолжить, войдите в систему с учетной записью, у которой есть доступ.</p>
+            <p class="error-message">У вашей учетной записи нет доступа к этой странице.</p>
         {% else %}
             <p class="error-message">Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
         {% endif %}
@@ -93,21 +108,20 @@
     <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <div class="input-group">
-            <label for="username">Имя пользователя:</label>
-            <input type="text" id="username" name="username" class="input-field" required>
+            <label for="username">Имя пользователя</label>
+            <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
         </div>
 
         <div class="input-group">
-            <label for="password">Пароль:</label>
-            <input type="password" id="password" name="password" class="input-field" required>
-            <div class="error-message">Заполните это поле</div>
+            <label for="password">Пароль</label>
+            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
         </div>
-        <p><a href="{% url 'password_reset_form' %}">Забыли пароль?</a></p>
 
         <button type="submit" class="login-btn">Войти</button>
-        <input type="hidden" name="next" value="{{ next }}" />
-
+        <input type="hidden" name="next" value="{{ next }}">
     </form>
+
+    <a href="{% url 'password_reset_form' %}" class="forgot-password">Забыли пароль?</a>
 </div>
 
 {% endblock %}

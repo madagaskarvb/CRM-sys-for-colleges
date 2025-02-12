@@ -70,33 +70,16 @@
 <body>
     <h1>Группы и их студенты</h1>
     <div class="container">
+        {% for group, students in group_students.items %}
         <div class="group-card">
-            <h2>Группа РПО 1</h2>
+            <h2>{{ group.group_name }}</h2>
             <ul class="student-list">
-                <li>Котельникова Екатерина</li>
-                <li>Бацаценко Алеся</li>
-                <li>Панов Илья</li>
-                <li>Еремеев Иван</li>
+                {% for student in students %}
+                <li>{{ student.full_name }}</li>
+                {% endfor %}
             </ul>
         </div>
-        <div class="group-card">
-            <h2>Группа РПО2</h2>
-            <ul class="student-list">
-                <li>Карпухова Анастасия</li>
-                <li>Ольга Васильева</li>
-                <li>Павел Морозов</li>
-                <li>Наталья Сергеева</li>
-            </ul>
-        </div>
-        <div class="group-card">
-            <h2>Группа КГиД4</h2>
-            <ul class="student-list">
-                <li>Анна Федорова</li>
-                <li>Виктор Орлов</li>
-                <li>Сергей Захаров</li>
-                <li>Татьяна Белова</li>
-            </ul>
-        </div>
+        {% endfor %}
     </div>
 </body>
 </html>

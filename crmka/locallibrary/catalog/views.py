@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import Group
 from collections import defaultdict
 # Create your views here.
-from .models import Students, Teachers, EducationalMaterials
+from .models import Students, Teachers, EducationalMaterials, Subjects, Groups
 
 
 def adminPage(request):
@@ -45,10 +45,14 @@ def passwordResetFormPage(request):
     return render(request, 'registration/password_reset_form.html', {'css_file': 'registration/password_reset_form.css'})
 
 def listOfStudentsPage(request):
-    return render(request, 'basikPages/listOfStudents.html', {'css_file': 'basikPages/listOfStudents.css'})
+    groups = Groups.objects.all()
+    group_students = {group: Students.objects.filter(group=group) for group in groups}
+    return render(request, 'basikPages/listOfStudents.html', {'group_students': group_students})
 
 def listOfTeachersPage(request):
-    return render(request, 'basikPages/listOfTeachers.html', {'css_file': 'basikPages/listOfTeachers.css'})
+    teachers = Teachers.objects.all()
+    teacher_subjects = {teacher: Subjects.objects.filter(teacher=teacher) for teacher in teachers}
+    return render(request, 'basikPages/listOfTeachers.html', {'teacher_subjects': teacher_subjects})
 
 def EducationMaterialsPage(request):
     materials = EducationalMaterials.objects.all()

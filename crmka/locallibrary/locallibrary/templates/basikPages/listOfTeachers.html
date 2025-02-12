@@ -72,26 +72,15 @@
 <body>
     <h1>Наши преподаватели</h1>
     <div class="container">
+        {% for teacher, subjects in teacher_subjects.items %}
         <div class="card">
             <img src="#" alt="Преподаватель">
-            <h2>Штейнберг Эмиль Эдуардович</h2>
-            <p>Объектно-ориентированное программирование С++</p>
+            <h2>{{ teacher.full_name }}</h2>
+            {% for subject in subjects %}
+            <p>{{ subject.subject_name }}</p>
+            {% endfor %}
         </div>
-        <div class="card">
-            <img src="#" alt="Преподаватель">
-            <h2>Алхимов Владислав Алексеевич</h2>
-            <p>Поддержка и тестирование программных модулей</p>
-        </div>
-        <div class="card">
-            <img src="#" alt="Преподаватель">
-            <h2>Никулина Дарина Павловна</h2>
-            <p>Иностранный язык</p>
-        </div>
-        <div class="card">
-            <img src="#" alt="Преподаватель">
-            <h2>Халилов Роберт Фанисович</h2>
-            <p>Физическая культура</p>
-        </div>
+        {% endfor %}
     </div>
 </body>
 </html>
