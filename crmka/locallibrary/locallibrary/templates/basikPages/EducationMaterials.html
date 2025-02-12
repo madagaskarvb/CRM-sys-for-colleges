@@ -4,8 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Учебные материалы</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/basikPages/EducationMaterials.css' %}" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #008000, #4B0082, #000000);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .button-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 100px;
+            height: auto; 
+            overflow: visible;
+        }
+
+        .button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .button.add {
+            background-color: #288429;
+            color: #fff;
+            backdrop-filter: blur(100px);
+            border: 1px solid rgba(69, 196, 62, 0.2);
+            animation: buttonGlow 2s infinite alternate;
+            text-decoration: none;
+        }
+</style>
 </head>
 <body>
 
@@ -13,22 +100,15 @@
     <h1>Учебные материалы</h1>
 </header>
 
-<div class="container">
-
-    {% for subject, materials in grouped_materials.items %}
-    <div class="subject">
-        <h2>{{ subject }}</h2>
-        <div class="material">
-            {% for material in materials %}
-            <p>{{ material }}</p>
-            <p><a href="{{ material.material_source }}">{{ material.topic_name }}</a></p>
-            {% endfor %}
+    <div class="container">
+        <div class="card">
+            <h2>Предмет</h2>
+            <p><a href="добавить_материалы.html" class="button login">Уч материал</a></p>
         </div>
     </div>
-    {% endfor %}
 
     <!-- Кнопка для добавления учебных материалов -->
-    <a href="добавить_материалы.html" class="add-material-btn">Добавить учебные материалы</a>
+    <a href="добавить_материалы.html" class="button add">Добавить учебные материалы</a>
 </div>
 
 <footer>

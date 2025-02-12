@@ -1,5 +1,5 @@
 from django import forms
-from .models import Students
+from .models import Students, Teachers
 
 class UserAdminForm(forms.ModelForm):
     class Meta:
@@ -15,3 +15,16 @@ class UserAdminForm(forms.ModelForm):
 
                 raise forms.ValidationError(f"Поле '{field}' обязательно для заполнения.")
         return cleaned_data
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = None  # Установим модель в представлении
+        fields = ['full_name', 'email', 'contact_phone', 'password']
+
+    def __init__(self, *args, **kwargs):
+        user_type = kwargs.pop('user_type', None)
+        super().__init__(*args, **kwargs)
+        if user_type == 'student':
+            self.Meta.model = Students
+        elif user_type == 'teacher':
+            self.Meta.model = Teachers

@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from collections import defaultdict
 # Create your views here.
 from .models import Students, Teachers, EducationalMaterials, Subjects, Groups
+from .forms import ProfileForm
 
 
 def adminPage(request):
@@ -73,6 +74,27 @@ def PageForChangeNamePage(request):
 
 def AddMaterialPage(request):
     return render(request, 'basikPages/AddMaterial.html', {'css_file': 'basikPages/AddMaterial.css'})
+
+def editProfilePage(request):
+    user = request.user
+    if hasattr(user, 'students'):
+        instance = user.students
+        user_type = 'student'
+    elif hasattr(user, 'teachers'):
+        instance = user.teachers
+        user_type = 'teacher'
+    else:
+        return redirect('login')
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=instance, user_type=user_type)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_page')
+    else:
+        form = ProfileForm(instance=instance, user_type=user_type)
+
+    return render(request, 'basikPages/PageForChangeName.html', {'form': form})
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'

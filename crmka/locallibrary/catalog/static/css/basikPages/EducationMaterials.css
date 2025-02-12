@@ -1,61 +1,99 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #000000;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 0;
+
+body {
+    background: linear-gradient(135deg, #008000, #4B0082, #000000);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+h1 {
+    margin: 20px 0;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.group-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
     text-align: center;
 }
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 60px rgba(112, 224, 20, 0.7); 
-    position: relative;
+
+.group-card:hover {
+    transform: translateY(-5px);
 }
-h1 {
-    color: #ffffff;
-}
-.subject {
-    margin-bottom: 20px;
-}
-.subject h2 {
-    color: #4CAF50;
+
+.group-card h2 {
+    font-size: 1.8rem;
     margin-bottom: 10px;
 }
-.material {
-    margin-left: 20px;
+
+.student-list {
+    text-align: left;
+    margin-top: 10px;
+    font-size: 1rem;
 }
-.material a {
-    color: #1a73e8;
-    text-decoration: none;
+
+.student-list li {
+    margin-bottom: 5px;
 }
-.material a:hover {
-    text-decoration: underline;
+
+.button-container {
+    display: center;
+    gap: 10px;
+    margin-top: 10px;
 }
-.add-material-btn {
-    display: inline-block;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
-    text-align: center;
+
+.button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
-.add-material-btn:hover {
-    background-color: #45a049;
+.button.login {
+    background-color: #288429;
+    color: #fff;
+    backdrop-filter: blur(100px);
+    border: 1px solid rgba(69, 196, 62, 0.2);
+    animation: buttonGlow 2s infinite alternate;
+    text-decoration: none;
 }
-footer {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
+.card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 1rem;
+    margin-bottom: 10px;
 }
