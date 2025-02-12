@@ -42,7 +42,7 @@ urlpatterns = [
     path('password_reset_done/', views.passwordResetDonePage, name='password_reset_done'),
     path('password_reset_email/', views.passwordResetEmailPage, name='password_reset_email'),
     path('password_reset_form/', views.passwordResetFormPage, name='password_reset_form'),
-    path('accounts/', include('django.contrib.auth.urls')),
+    #path('accounts/', include('django.contrib.auth.urls')),
     path('list_of_students/', views.listOfStudentsPage, name='list_of_students'),
     path('list_of_teachers/', views.listOfTeachersPage, name='list_of_teachers'),
     path('education_materials/', views.EducationMaterialsPage, name='education_materials'),

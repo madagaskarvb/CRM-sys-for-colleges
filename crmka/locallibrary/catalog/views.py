@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.urls import reverse
 from django.contrib.auth.models import Group
@@ -10,13 +10,17 @@ def adminPage(request):
     return render(request, 'basikPages/adminPage.html', {'css_file': 'basikPages/adminPage.css'})
 
 def studentPage(request):
-    return render(request, 'basikPages/studentPage.html', {'css_file': 'basikPages/studentPage.css'})
+    # user = request.user
+    # if user.groups.filter(name='Студенты').exists():
+        return render(request, 'basikPages/studentPage.html', {'css_file': 'basikPages/studentPage.css'})
 
 def mainPage(request):
     return render(request, 'basikPages/main.html', {'css_file': 'basikPages/mainPage.css'})
 
 def teacherPage(request):
-    return render(request, 'basikPages/teacherPage.html', {'css_file': 'basikPages/teacherPage.css'})
+    # user = request.user
+    # if user.groups.filter(name='Преподаватели').exists():
+        return render(request, 'basikPages/teacherPage.html', {'css_file': 'basikPages/teacherPage.css'})
 
 def loginPage(request):
     return render(request, 'registration/login.html', {'css_file': 'registration/login.css'})
