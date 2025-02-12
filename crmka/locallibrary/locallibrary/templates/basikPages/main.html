@@ -71,6 +71,7 @@
             backdrop-filter: blur(100px);
             border: 1px solid rgba(69, 196, 62, 0.2);
             animation: buttonGlow 2s infinite alternate;
+            text-decoration: none;
         }
 
         @keyframes buttonGlow {
@@ -90,7 +91,7 @@
 <body>
     <h1>Добро пожаловать в Колледж</h1>
     <div class="button-container">
-        <button class="button login">Войти</button>
+        <a href="{% url 'login' %}" class="button login">Войти</a>
     </div>
 </body>
 </html>

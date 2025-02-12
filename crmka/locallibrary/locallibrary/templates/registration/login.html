@@ -102,11 +102,12 @@
             <input type="password" id="password" name="password" class="input-field" required>
             <div class="error-message">Заполните это поле</div>
         </div>
+        <p><a href="{% url 'password_reset_form' %}">Забыли пароль?</a></p>
 
         <button type="submit" class="login-btn">Войти</button>
         <input type="hidden" name="next" value="{{ next }}" />
-    </form>
 
+    </form>
 </div>
 
 {% endblock %}

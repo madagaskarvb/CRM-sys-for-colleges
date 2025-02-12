@@ -75,32 +75,25 @@
 </header>
 
 <div class="container">
+
+    {% for subject, materials in grouped_materials.items %}
     <div class="subject">
-        <h2>Математика</h2>
+        <h2>{{ subject }}</h2>
         <div class="material">
-            <p><a href="ссылка_на_материал_1">Учебник по алгебре</a></p>
-            <p><a href="ссылка_на_материал_2">Сборник задач по геометрии</a></p>
-            <p><a href="ссылка_на_материал_3">Видеоуроки по математике</a></p>
+            {% for material in materials %}
+            <p>{{ material }}</p>
+            <p><a href="{{ material.material_source }}">{{ material.topic_name }}</a></p>
+            {% endfor %}
         </div>
     </div>
-
-
-
-    <div class="subject">
-        <h2>История</h2>
-        <div class="material">
-            <p><a href="ссылка_на_материал_7">Учебник по истории России</a></p>
-            <p><a href="ссылка_на_материал_8">Хронологические таблицы</a></p>
-            <p><a href="ссылка_на_материал_9">Документы и источники</a></p>
-        </div>
-    </div>
+    {% endfor %}
 
     <!-- Кнопка для добавления учебных материалов -->
     <a href="добавить_материалы.html" class="add-material-btn">Добавить учебные материалы</a>
 </div>
 
 <footer>
-    <p>&copy; 2023 Учебные материалы. Все права защищены.</p>
+    <p>&copy; 2025 Учебные материалы. Все права защищены.</p>
 </footer>
 
 </body>

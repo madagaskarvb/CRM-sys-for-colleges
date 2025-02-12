@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView
 from django.urls import reverse
 from django.contrib.auth.models import Group
+from collections import defaultdict
 # Create your views here.
-from .models import Students, Teachers
+from .models import Students, Teachers, EducationalMaterials
 
 
 def adminPage(request):
@@ -50,10 +51,24 @@ def listOfTeachersPage(request):
     return render(request, 'basikPages/listOfTeachers.html', {'css_file': 'basikPages/listOfTeachers.css'})
 
 def EducationMaterialsPage(request):
-    return render(request, 'basikPages/EducationMaterials.html', {'css_file': 'basikPages/EducationMaterials.css'})
+    materials = EducationalMaterials.objects.all()
+    grouped_materials = defaultdict(list)
+
+    for material in materials:
+        grouped_materials[material.subject.subject_name].append(material)
+
+    print(grouped_materials)  # Добавьте это для отладки
+
+    return render(request, 'basikPages/EducationMaterials.html', {
+        'grouped_materials': grouped_materials,
+        'css_file': 'basikPages/EducationMaterials.css'
+    })
 
 def PageForChangeNamePage(request):
     return render(request, 'basikPages/PageForChangeName.html', {'css_file': 'basikPages/PageForChangeName.css'})
+
+def AddMaterialPage(request):
+    return render(request, 'basikPages/AddMaterial.html', {'css_file': 'basikPages/AddMaterial.css'})
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'

@@ -47,6 +47,7 @@ urlpatterns = [
     path('list_of_teachers/', views.listOfTeachersPage, name='list_of_teachers'),
     path('education_materials/', views.EducationMaterialsPage, name='education_materials'),
     path('page_for_change_name/', views.PageForChangeNamePage, name='page_for_change_name'),
+    path('add_material/', views.AddMaterialPage, name='add_material'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
