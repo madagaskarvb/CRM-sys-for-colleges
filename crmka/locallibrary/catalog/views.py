@@ -12,16 +12,16 @@ def adminPage(request):
     return render(request, 'basikPages/adminPage.html', {'css_file': 'basikPages/adminPage.css'})
 
 def studentPage(request):
-    # user = request.user
-    # if user.groups.filter(name='Студенты').exists():
+    user = request.user
+    if user.groups.filter(name='Студенты').exists():
         return render(request, 'basikPages/studentPage.html', {'css_file': 'basikPages/studentPage.css'})
 
 def mainPage(request):
     return render(request, 'basikPages/main.html', {'css_file': 'basikPages/mainPage.css'})
 
 def teacherPage(request):
-    # user = request.user
-    # if user.groups.filter(name='Преподаватели').exists():
+    user = request.user
+    if user.groups.filter(name='Преподаватели').exists():
         return render(request, 'basikPages/teacherPage.html', {'css_file': 'basikPages/teacherPage.css'})
 
 def loginPage(request):
