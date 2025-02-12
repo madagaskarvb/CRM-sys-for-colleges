@@ -60,7 +60,7 @@ header h1 {
 nav ul {
   list-style: none;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 2vw; /* Расстояние между элементами зависит от ширины окна */
   margin: 0;
   padding: 0;
@@ -150,6 +150,7 @@ textarea {
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
+
 }
 
 /* Стиль для кнопки "Главная" */
@@ -169,6 +170,7 @@ textarea {
   background-color: #ff00ff;
   color: white;
   box-shadow: 0 2px 4px rgba(255, 0, 255, 0.2);
+  margin-right: auto; 
 }
 
 .login-btn:hover {
@@ -179,11 +181,19 @@ textarea {
 /* Расположение кнопок */
 .nav-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2vw; /* Отступы зависят от ширины окна */
+  justify-content: space-between; /* Распределяет элементы по бокам */
+  /* align-items: center; */
+  padding: 2vw;
   width: 100%;
-  flex-wrap: wrap; /* Перенос кнопок на новую строку при необходимости */
+  flex-wrap: wrap;
+}
+
+.nav-container .home-btn {
+  margin-right: auto; /* Отодвигает элемент влево */
+}
+
+.nav-container .login-btn {
+  margin-left: auto; /* Отодвигает элемент вправо */
 }
 
 /* Медиа-запросы для адаптивности */

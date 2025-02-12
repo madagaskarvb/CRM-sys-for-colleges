@@ -83,48 +83,22 @@
             }
         }
         
-        /* Стили для нижних кнопок */
         .nav-container {
             display: flex;
-            justify-content: center;
-            gap: 2vw; /* Расстояние между кнопками */
+            align-items: center;
             padding: 2vw;
-            position: absolute;
-            bottom: 20px;
             width: 100%;
+            flex-wrap: wrap;
         }
-
-        .nav-button {
-            padding: 1vw 2vw;
-            border: none;
-            border-radius: 5px;
-            font-size: 2vw;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
+        
         .home-btn {
             background-color: transparent;
             color: #ff00ff;
             border: 2px solid #ff00ff;
         }
-
-        .home-btn:hover {
-            background-color: #ff00ff;
-            color: white;
-        }
-
+        
         .login-btn {
-            background-color: #ff00ff;
-            color: white;
-            box-shadow: 0 2px 4px rgba(255, 0, 255, 0.2);
-        }
-
-        .login-btn:hover {
-            background-color: #cc00cc;
-            transform: translateY(-2px);
+            order: 2; /* Устанавливает порядок для кнопки "Войти" */
         }
 
         /* Медиа-запросы для адаптивности */

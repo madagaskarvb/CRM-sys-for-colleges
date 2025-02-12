@@ -7,7 +7,7 @@
         max-width: 400px;
         margin: 50px auto;
         padding: 20px;
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(98, 88, 88, 0.9);
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
@@ -27,13 +27,13 @@
     .input-group .input-field {
         width: 100%;
         padding: 10px;
-        border: 1px solid #ccc;
+        border: 1px solid #000000;
         border-radius: 5px;
         font-size: 16px;
     }
 
     .input-group .error-message {
-        color: red;
+        color: red; 
         font-size: 14px;
         margin-top: 5px;
         display: none;
@@ -44,7 +44,7 @@
         width: 100%;
         padding: 10px;
         background-color: #ff00ff;
-        color: white;
+        color: rgb(255, 255, 255);
         border: none;
         border-radius: 5px;
         font-size: 16px;
@@ -72,7 +72,7 @@
     /* Стили для сообщений об ошибках */
     .error-message {
         color: red;
-        font-size: 14px;
+        font-size: 14px; 
         margin-bottom: 10px;
     }
 </style>
@@ -111,44 +111,3 @@
 </div>
 
 {% endblock %}
-
-
-<!-- {% extends "base_generic.html" %}
-{% block content %}
-
-
-{% if form.errors %}
-  <p>Ваше имя пользователя и пароль не совпадают. Попробуйте еще раз.</p>
-{% endif %}
-
-{% if next %}
-  {% if user.is_authenticated %}
-    <p>У вашей учетной записи нет доступа к этой странице. Чтобы продолжить, войдите в систему с учетной записью, у которой есть доступ.</p>
-  {% else %}
-    <p>Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
-  {% endif %}
-{% endif %}
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-
-<tr>
-  <td>{{ form.username.label_tag }}</td>
-  <td>{{ form.username }}</td>
-</tr>
-
-<tr>
-  <td>{{ form.password.label_tag }}</td>
-  <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="Войти" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
-{# Assumes you setup the password_reset view in your URLconf #}
-<p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
-
-{% endblock %} -->
