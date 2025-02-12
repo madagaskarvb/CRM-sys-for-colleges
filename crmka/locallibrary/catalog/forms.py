@@ -1,5 +1,5 @@
 from django import forms
-from .models import Students, Teachers
+from .models import Students, Teachers, EducationalMaterials
 
 class UserAdminForm(forms.ModelForm):
     class Meta:
@@ -18,13 +18,27 @@ class UserAdminForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model = None  # Установим модель в представлении
-        fields = ['full_name', 'email', 'contact_phone', 'password']
+        model = Students
+        fields = ['full_name', 'email', 'contact_phone']
+        labels = {
+            'full_name': 'Введите имя',
+            'email': 'Введите email',
+            'contact_phone': 'Введите номер телефона',
+        }
 
-    def __init__(self, *args, **kwargs):
-        user_type = kwargs.pop('user_type', None)
-        super().__init__(*args, **kwargs)
-        if user_type == 'student':
-            self.Meta.model = Students
-        elif user_type == 'teacher':
-            self.Meta.model = Teachers
+class EducationalMaterialForm(forms.ModelForm):
+    class Meta:
+        model = EducationalMaterials
+        fields = ['subject', 'topic_name', 'material_type', 'material_source']
+        labels = {
+            'subject': 'Выберите предмет',
+            'topic_name': 'Введите название темы',
+            'material_type': 'Введите тип материала',
+            'material_source': 'Введите ссылку на материал',
+        }
+        widgets = {
+            'subject': forms.Select(attrs={'class': 'form-control'}),
+            'topic_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'material_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'material_source': forms.TextInput(attrs={'class': 'form-control'}),
+        }

@@ -83,9 +83,11 @@
     </style>
 </head>
 <body>
+    
     <div class="login-container">
         <h1>Вход в систему</h1>
         <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
             <div class="input-group">
                 <label for="username">Имя пользователя</label>
                 <input type="text" id="username" name="username" placeholder="Введите имя пользователя">

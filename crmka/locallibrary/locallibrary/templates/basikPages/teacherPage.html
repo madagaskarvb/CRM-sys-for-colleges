@@ -16,7 +16,7 @@
         <a href="{% url 'list_of_teachers' %}" class="button">Посмотреть преподавателей</a>
         <a href="{% url 'list_of_students' %}" class="button">Посмотреть студентов</a>
         <a href="{% url 'page_for_change_name' %}" class="button">Поменять личную информацию</a>
-        <a href="#" class="button delete">Удалить аккаунт</a>
+        <a href="{% url 'logged_out' %}" class="button delete">Выйти из аккаунта</a>
     </div>
 </body>
 </html>

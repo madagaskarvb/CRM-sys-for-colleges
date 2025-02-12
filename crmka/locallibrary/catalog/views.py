@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from collections import defaultdict
 # Create your views here.
 from .models import Students, Teachers, EducationalMaterials, Subjects, Groups
-from .forms import ProfileForm
+from .forms import EducationalMaterialForm, ProfileForm
 
 
 def adminPage(request):
@@ -56,35 +56,31 @@ def listOfTeachersPage(request):
     return render(request, 'basikPages/listOfTeachers.html', {'teacher_subjects': teacher_subjects})
 
 def EducationMaterialsPage(request):
-    materials = EducationalMaterials.objects.all()
+    materials = EducationalMaterials.objects.select_related('subject').all()
     return render(request, 'basikPages/EducationMaterials.html', {'materials': materials})
 
 def PageForChangeNamePage(request):
-    return render(request, 'basikPages/PageForChangeName.html', {'css_file': 'basikPages/PageForChangeName.css'})
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('page_for_change_name')
+    else:
+        form = ProfileForm(instance=request.user)
+    return render(request, 'basikPages/PageForChangeName.html', {'form': form, 'css_file': 'basikPages/PageForChangeName.css'})
 
 def AddMaterialPage(request):
     return render(request, 'basikPages/AddMaterial.html', {'css_file': 'basikPages/AddMaterial.css'})
 
-def editProfilePage(request):
-    user = request.user
-    if hasattr(user, 'students'):
-        instance = user.students
-        user_type = 'student'
-    elif hasattr(user, 'teachers'):
-        instance = user.teachers
-        user_type = 'teacher'
-    else:
-        return redirect('login')
-
+def add_material_view(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST, instance=instance, user_type=user_type)
+        form = EducationalMaterialForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('profile_page')
+            return redirect('education_materials')
     else:
-        form = ProfileForm(instance=instance, user_type=user_type)
-
-    return render(request, 'basikPages/PageForChangeName.html', {'form': form})
+        form = EducationalMaterialForm()
+    return render(request, 'basikPages/AddMaterial.html', {'form': form})
 
 class CustomLoginView(LoginView):
     template_name = 'registration/login.html'

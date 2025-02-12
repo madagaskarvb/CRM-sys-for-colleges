@@ -107,13 +107,10 @@
 </header>
 
 <div class="container">
-    {% for subject, materials in materials.items %}
+    {% for material in materials %}
     <div class="card">
-        <h2>{{ subject.subject_name }}</h2>
-        {% for material in materials %}
-        <p>{{ material.topic_name }}</p>
-        <p><a href="{{ material.material_source }}" class="button login"></a></p>
-        {% endfor %}
+        <h2>{{ material.subject.subject_name }}</h2>
+        <p><a href="{{ material.material_source }}" class="button login">{{ material.topic_name}}</a></p>
     </div>
     {% endfor %}
 </div>

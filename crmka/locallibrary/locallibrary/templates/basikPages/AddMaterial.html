@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление учебными материалами</title>
+    <title>Добавление учебных материалов</title>
     <style>
         * {
             margin: 0;
@@ -92,66 +92,25 @@
             justify-content: space-between;
             align-items: center;
         }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Добавление учебных материалов</h1>
     <div class="container">
-        <div class="input-group">
-            <label for="title">Название материала</label>
-            <input type="text" id="title" placeholder="Введите название">
-        </div>
-        <div class="input-group">
-            <label for="description">Описание</label>
-            <textarea id="description" rows="3" placeholder="Введите описание"></textarea>
-        </div>
-        <div class="input-group">
-            <label for="file">Загрузить файл</label>
-            <input type="file" id="file">
-        </div>
-        <button class="button add" onclick="addMaterial()">Добавить</button>
-        <button class="button save" onclick="saveMaterials()">Сохранить</button>
-        <div class="materials" id="materials-list"></div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button add">Добавить</button>
+        </form>
     </div>
-
-    <script>
-        let materials = [];
-
-        function addMaterial() {
-            const title = document.getElementById('title').value;
-            const description = document.getElementById('description').value;
-            const file = document.getElementById('file').files[0];
-            
-            if (title && description && file) {
-                const fileName = file.name;
-                materials.push({ title, description, fileName });
-                updateMaterialList();
-            }
-        }
-
-        function deleteMaterial(index) {
-            materials.splice(index, 1);
-            updateMaterialList();
-        }
-        function updateMaterialList() {
-            const list = document.getElementById('materials-list');
-            list.innerHTML = '';
-            materials.forEach((material, index) => {
-                list.innerHTML += `
-                    <div class="material-item">
-                        <div>
-                            <strong>${material.title}</strong>
-                            <p>${material.description}</p>
-                            <p><em>Файл: ${material.fileName}</em></p>
-                        </div>
-                        <button class="button delete" onclick="deleteMaterial(${index})">Удалить</button>
-                    </div>`;
-            });
-        }
-
-        function saveMaterials() {
-            alert('Материалы сохранены!');
-        }
-    </script>
 </body>
 </html>

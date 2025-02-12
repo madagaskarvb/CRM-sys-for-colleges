@@ -70,7 +70,7 @@
 </head>
 <body>
     <h1>Редактирование профиля</h1>
-    <form class="profile-form" method="post">
+    <form method="post" class="profile-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn">Сохранить изменения</button>
