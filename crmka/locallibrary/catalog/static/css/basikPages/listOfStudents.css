@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Группы и студенты</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #008000, #4B0082, #000000);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 20px 0;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .group-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .group-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .group-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .student-list {
+            text-align: left;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+
+        .student-list li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Группы и их студенты</h1>
+    <div class="container">
+        <div class="group-card">
+            <h2>Группа РПО 1</h2>
+            <ul class="student-list">
+                <li>Котельникова Екатерина</li>
+                <li>Бацаценко Алеся</li>
+                <li>Панов Илья</li>
+                <li>Еремеев Иван</li>
+            </ul>
+        </div>
+        <div class="group-card">
+            <h2>Группа РПО2</h2>
+            <ul class="student-list">
+                <li>Карпухова Анастасия</li>
+                <li>Ольга Васильева</li>
+                <li>Павел Морозов</li>
+                <li>Наталья Сергеева</li>
+            </ul>
+        </div>
+        <div class="group-card">
+            <h2>Группа КГиД4</h2>
+            <ul class="student-list">
+                <li>Анна Федорова</li>
+                <li>Виктор Орлов</li>
+                <li>Сергей Захаров</li>
+                <li>Татьяна Белова</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
