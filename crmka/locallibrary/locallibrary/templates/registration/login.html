@@ -1,127 +1,103 @@
-{% extends "base_generic.html" %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-{% block content %}
-<style>
-    body {
-        background: linear-gradient(135deg, #008000, #CD00CD, #000000);
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-    }
+        body {
+            background: linear-gradient(135deg, #008000, #CD00CD, #000000);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
 
-    .login-container {
-        background: rgba(255, 255, 255, 0.1);
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        width: 400px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-    }
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 15px 20px rgba(31, 255, 6, 0.624);
+            width: 100%;
+            max-width: 400px;
+        }
 
-    h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-    }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
 
-    .input-group {
-        margin-bottom: 15px;
-        text-align: left;
-    }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
 
-    .input-group label {
-        display: block;
-        font-size: 1rem;
-        margin-bottom: 5px;
-    }
+        .input-group label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
 
-    .input-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
-        font-size: 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        outline: none;
-    }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
 
-    .input-group input::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .login-btn {
-        width: 100%;
-        padding: 12px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 8px;
-        background: #288429;
-        color: #fff;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
+        .button.login { background-color: #CD00CD; color: #fff; }
+        .button:hover { opacity: 0.8; transform: translateY(-2px); }
+        
+        .forgot-password {
+            display: block;
+            margin-top: 10px;
+            color: #4ac419;
+            text-decoration: none;
+        }
 
-    .login-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px rgba(20, 242, 38, 0.3);
-    }
-
-    .forgot-password {
-        display: block;
-        margin-top: 10px;
-        color: #CD00CD;
-        text-decoration: none;
-        font-size: 1rem;
-    }
-
-    .forgot-password:hover {
-        text-decoration: underline;
-    }
-
-    .error-message {
-        color: #ff4d4d;
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-</style>
-
-<div class="login-container">
-    <h2>Вход в систему</h2>
-
-    {% if form.errors %}
-        <p class="error-message">Неверное имя пользователя или пароль. Попробуйте снова.</p>
-    {% endif %}
-
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p class="error-message">У вашей учетной записи нет доступа к этой странице.</p>
-        {% else %}
-            <p class="error-message">Пожалуйста, войдите в систему, чтобы увидеть эту страницу.</p>
-        {% endif %}
-    {% endif %}
-
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="input-group">
-            <label for="username">Имя пользователя</label>
-            <input type="text" id="username" name="username" placeholder="Введите имя пользователя" required>
-        </div>
-
-        <div class="input-group">
-            <label for="password">Пароль</label>
-            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
-        </div>
-
-        <button type="submit" class="login-btn">Войти</button>
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
-
-    <a href="{% url 'password_reset_form' %}" class="forgot-password">Забыли пароль?</a>
-</div>
-
-{% endblock %}
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Вход в систему</h1>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="username">Имя пользователя</label>
+                <input type="text" id="username" name="username" placeholder="Введите имя пользователя">
+            </div>
+            <div class="input-group">
+                <label for="password">Пароль</label>
+                <input type="password" id="password" name="password" placeholder="Введите пароль">
+            </div>
+            <button type="submit" class="button login">Войти</button>
+        </form>
+        <a href="{% url 'password_reset_form' %}" class="forgot-password">Забыли пароль?</a>
+    </div>
+</body>
+</html>
