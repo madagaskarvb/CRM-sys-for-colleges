@@ -3,37 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Учебные материалы</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/basikPages/EducationMaterials.css' %}" />
+    <title>Управление учебными материалами</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #008000, #CD00CD, #000000);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .button.add { background-color: #008000; color: #fff; }
+        .button.save { background-color: #CD00CD; color: #fff; }
+        .button.delete { background-color: #FF0000; color: #fff; }
+
+        .button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .materials {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .material-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
-
-<header>
-    <h1>Учебные материалы</h1>
-</header>
-
-<div class="container">
-
-    {% for subject, materials in grouped_materials.items %}
-    <div class="subject">
-        <h2>{{ subject }}</h2>
-        <div class="material">
-            {% for material in materials %}
-            <p>{{ material }}</p>
-            <p><a href="{{ material.material_source }}">{{ material.topic_name }}</a></p>
-            {% endfor %}
+    <h1>Добавление учебных материалов</h1>
+    <div class="container">
+        <div class="input-group">
+            <label for="title">Название материала</label>
+            <input type="text" id="title" placeholder="Введите название">
         </div>
+        <div class="input-group">
+            <label for="description">Описание</label>
+            <textarea id="description" rows="3" placeholder="Введите описание"></textarea>
+        </div>
+        <div class="input-group">
+            <label for="file">Загрузить файл</label>
+            <input type="file" id="file">
+        </div>
+        <button class="button add" onclick="addMaterial()">Добавить</button>
+        <button class="button save" onclick="saveMaterials()">Сохранить</button>
+        <div class="materials" id="materials-list"></div>
     </div>
-    {% endfor %}
 
-    <!-- Кнопка для добавления учебных материалов -->
-    <a href="добавить_материалы.html" class="add-material-btn">Добавить учебные материалы</a>
-</div>
+    <script>
+        let materials = [];
 
-<footer>
-    <p>&copy; 2025 Учебные материалы. Все права защищены.</p>
-</footer>
+        function addMaterial() {
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const file = document.getElementById('file').files[0];
+            
+            if (title && description && file) {
+                const fileName = file.name;
+                materials.push({ title, description, fileName });
+                updateMaterialList();
+            }
+        }
 
+        function deleteMaterial(index) {
+            materials.splice(index, 1);
+            updateMaterialList();
+        }
+
+        function updateMaterialList() {
+            const list = document.getElementById('materials-list');
+            list.innerHTML = '';
+            materials.forEach((material, index) => {
+                list.innerHTML += `
+                    <div class="material-item">
+                        <div>
+                            <strong>${material.title}</strong>
+                            <p>${material.description}</p>
+                            <p><em>Файл: ${material.fileName}</em></p>
+                        </div>
+                        <button class="button delete" onclick="deleteMaterial(${index})">Удалить</button>
+                    </div>`;
+            });
+        }
+
+        function saveMaterials() {
+            alert('Материалы сохранены!');
+        }
+    </script>
 </body>
 </html>
