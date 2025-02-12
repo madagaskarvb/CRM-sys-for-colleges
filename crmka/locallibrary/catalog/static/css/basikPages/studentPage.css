@@ -1,45 +1,93 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #504f4f;
+    background: linear-gradient(135deg, #1e1e1e, #000000); /* Черный градиент */
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    color: #ffffff;
 }
+
 .container {
-    background-color: #9b3a0dd1;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+    background: rgba(51, 216, 42, 0.1); /* Полупрозрачный зеленый */
+    padding: 100px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(51, 216, 42, 0.3); /* Зеленая тень */
+    width: 500px;
     text-align: center;
+    backdrop-filter: blur(10px); /* Стеклянный эффект */
+    border: 1px solid rgba(51, 216, 42, 0.2); /* Зеленая рамка */
 }
+
 h1 {
-    color: #33d82a;
+    color: #33d82a; /* Зеленый */
     margin-bottom: 20px;
     text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5); 
+    font-size: 2rem;
 }
+
 .button {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0px;
+    padding: 15px;
+    margin: 5px 0;
     border: none;
-    border-radius: 4px;
-    background-color: #007bff;
-    color: #5a074c;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #b92edf, #b23de4); /* Фиолетовый градиент */
+    color: #ffffff;
     font-size: 16px;
     cursor: pointer;
     text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
+
 .button:hover {
-    background-color: #0056b3;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
+
 .button.delete {
-    background-color: #dc3545;
+    background: linear-gradient(135deg, #ff416c, #ff4b2b); /* Красный градиент */
 }
+
 .button.delete:hover {
-    background-color: #c82333;
+    background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(255, 75, 43, 0.3);
+}
+
+/* Анимация для контейнера */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .button {
+        padding: 10px;
+        font-size: 14px;
+    }
 }
